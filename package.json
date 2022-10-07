@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier \"**/*.{js,jsx,ts,tsx}\" --check",
+    "prettier:fix": "npm run prettier -- --write",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@graphql-yoga/node": "^2.13.13",
@@ -31,5 +34,10 @@
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "typescript": "4.8.4"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,jsx,js}": [
+      "npm run prettier"
+    ]
   }
 }
