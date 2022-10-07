@@ -4,9 +4,13 @@ import useSWR from 'swr';
 
 import { getUsers } from '@/services/apirequest';
 import Layout from '@/layouts/index';
+import useAuthStoreTrack from '@/store/auth.store';
 
 export default function Home() {
   const { data, error } = useSWR('{ users { name } }', getUsers);
+  const { isSignedIn, setAuthState } = useAuthStoreTrack();
+
+  const updateIsSignedIn = () => setAuthState('isSignedIn', !isSignedIn);
 
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
@@ -26,6 +30,21 @@ export default function Home() {
       <div className='text-xl font-pacifico text-center'>
         Welcome to this Next.js template app. Feel free to navigate through this website.
       </div>
+
+      <br />
+      <br />
+
+      <h1 className='text-4xl font-roboto font-bold'>State management store</h1>
+      <div className='text-xl font-roboto mt-2'>This stack uses Zustand as its state management store.</div>
+      <div className='text-xl font-roboto mt-2'>
+        Example: we have an Auth store and a state called isSignedIn. Test it out by updating it and check if the value is
+        retained by navigation to another page
+      </div>
+      <button onClick={updateIsSignedIn} className='bg-blue-900 p-3 rounded-lg hover:cursor-pointer mt-3'>
+        update isSignedIn
+      </button>
+
+      <div className='text-xl font-roboto mt-3'>value: {`${isSignedIn}`}</div>
     </div>
   );
 }

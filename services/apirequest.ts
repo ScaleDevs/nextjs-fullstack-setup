@@ -1,8 +1,9 @@
 // *** For Frontend *** //
 import { Fetcher } from 'swr';
 import { User } from './types';
+import { getUsersQry } from './graphql-query';
 
-export const getUsers: Fetcher<{ users: User[] }, string> = (query: string) =>
+const fetcher = (query: string) =>
   fetch('/api/graphql', {
     method: 'POST',
     headers: {
@@ -12,3 +13,5 @@ export const getUsers: Fetcher<{ users: User[] }, string> = (query: string) =>
   })
     .then((res) => res.json())
     .then((json) => json.data);
+
+export const getUsers: Fetcher<{ users: User[] }, string> = () => fetcher(getUsersQry);
