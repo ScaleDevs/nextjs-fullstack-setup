@@ -20,13 +20,13 @@
       "@/public/*": ["public/*"],
       "@/layouts/*": ["layouts/*"],
       "@/components/*": ["components/*"],
-      "@/services/*": ["services/*"],
+      "@/functions/*": ["functions/*"],
       "@/store/*": ["store/*"],
       "@/styles/*": [ "styles/*"],
       "@/theme/*": [ "theme/*"],
       "@/theme": [ "theme/index.ts"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "**/*.ts","**/*.tsx"],
+  "exclude": ["node_modules",]
 }

@@ -1,6 +1,6 @@
 // *** For Frontend *** //
 import { Fetcher } from 'swr';
-import { User } from './types';
+import { IUser } from '@/functions/types';
 import { getUsersQry } from './graphql-query';
 
 const fetcher = (query: string) =>
@@ -14,4 +14,4 @@ const fetcher = (query: string) =>
     .then((res) => res.json())
     .then((json) => json.data);
 
-export const getUsers: Fetcher<{ users: User[] }, string> = () => fetcher(getUsersQry);
+export const getUsers: Fetcher<{ users: IUser[] }, string> = () => fetcher(getUsersQry);
