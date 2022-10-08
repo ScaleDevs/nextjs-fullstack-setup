@@ -26,6 +26,7 @@ module.exports = {
 
     indent: 'off',
 
+    'import/no-anonymous-default-export': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
