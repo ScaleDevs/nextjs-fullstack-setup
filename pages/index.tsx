@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import Head from 'next/head';
 import useSWR from 'swr';
 
-import { getUsers } from '@/services/apirequest';
+import { getUsers } from 'functions/fe/apirequest';
 import Layout from '@/layouts/index';
 import useAuthStoreTrack from '@/store/auth.store';
 
