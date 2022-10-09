@@ -1,6 +1,6 @@
 // *** For Frontend *** //
 import { Fetcher } from 'swr';
-import { IUser } from '@/functions/types';
+import { IUser } from 'modules/types';
 import { getUsersQry } from './graphql-query';
 
 const fetcher = (query: string) =>

@@ -2,12 +2,12 @@ import { ReactElement } from 'react';
 import Head from 'next/head';
 import useSWR from 'swr';
 
-import { getUsers } from 'functions/fe/apirequest';
+import { getUsers } from 'modules/fe/apirequest';
 import Layout from '@/layouts/index';
 import useAuthStoreTrack from '@/store/auth.store';
 
 export default function Home() {
-  const { data, error } = useSWR('{ users { name } }', getUsers);
+  const { data, error } = useSWR(null, getUsers);
   const { isSignedIn, setAuthState } = useAuthStoreTrack();
 
   const updateIsSignedIn = () => setAuthState('isSignedIn', !isSignedIn);
@@ -23,7 +23,7 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <h1 className='text-center text-4xl text-gray-300 font-bold font-pacifico'>Welcome {data.users[0].name}</h1>
+      <h1 className='text-center text-4xl text-gray-300 font-bold font-pacifico'>Welcome {data.users[0].firstName}</h1>
 
       <br />
 

@@ -1,7 +1,10 @@
 export const getUsersQry = `
   { 
     users { 
-      name 
+      id
+		  firstName
+      middleName
+      lastName
     } 
   }
 `;

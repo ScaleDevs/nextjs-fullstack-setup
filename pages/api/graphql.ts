@@ -1,27 +1,14 @@
+import 'reflect-metadata';
 import { createServer } from '@graphql-yoga/node';
+import { buildSchema } from 'type-graphql';
+import { UserResolver } from 'modules/be/users/users.resolver';
 
-const typeDefs = /* GraphQL */ `
-  type Query {
-    users: [User!]!
-  }
-  type User {
-    name: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    users() {
-      return [{ name: 'JohnDoe' }];
-    },
-  },
-};
+const schema = await buildSchema({
+  resolvers: [UserResolver],
+});
 
 const server = createServer({
-  schema: {
-    typeDefs,
-    resolvers,
-  },
+  schema,
   endpoint: '/api/graphql',
   // graphiql: false // uncomment to disable GraphiQL
 });

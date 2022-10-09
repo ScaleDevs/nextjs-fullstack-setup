@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "es2018",
+    "lib": ["dom", "dom.iterable", "esnext", "es2018", "esnext.asynciterable"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,13 +14,16 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
 
     "baseUrl": ".",
     "paths": {
       "@/public/*": ["public/*"],
       "@/layouts/*": ["layouts/*"],
       "@/components/*": ["components/*"],
-      "@/functions/*": ["functions/*"],
+      "@/functions/*": ["modules/*"],
       "@/store/*": ["store/*"],
       "@/styles/*": [ "styles/*"],
       "@/theme/*": [ "theme/*"],

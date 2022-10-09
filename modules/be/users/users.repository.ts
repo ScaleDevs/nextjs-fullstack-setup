@@ -1,8 +1,8 @@
 import * as bcrypt from 'bcrypt';
-import prisma from './prisma.client';
-import { IUser } from '@/functions/types';
+import prisma from '../prisma.client';
+import { IUser } from 'modules/types';
 
-const createUser = async (userData: IUser) => {
+const createUser = async (userData: Omit<IUser, 'id' | 'salt'>) => {
   try {
     console.log('CREATING USER ...');
 
