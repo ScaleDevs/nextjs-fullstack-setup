@@ -15,9 +15,9 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <div className='text-xl font-pacifico text-center'>
-        Welcome to this Next.js template app. Feel free to navigate through this website. {data?.status}
-      </div>
+      <br />
+
+      <div className='text-xl font-pacifico text-center'>{data?.status}</div>
     </Layout>
   );
 }
