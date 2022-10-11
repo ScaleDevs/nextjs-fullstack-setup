@@ -5,6 +5,6 @@ This is a Next.js fullstack setup template (Helpful for small apps)
 - Next.js
 - typescript
 - tailwindcss
-- graphql
+- trpc
 - zustand
 - prisma
