@@ -1,12 +1,7 @@
 import Head from 'next/head';
 import Layout from 'src/layouts/index';
-import { trpc } from '@/utils/trpc';
 
 export default function Home() {
-  const { isFetching, data } = trpc.useQuery(['health']);
-
-  if (isFetching) return 'loading ...';
-
   return (
     <Layout>
       <Head>
@@ -17,7 +12,16 @@ export default function Home() {
 
       <br />
 
-      <div className='text-xl font-pacifico text-center'>{data?.status}</div>
+      <div className='flex flex-col space-y-5'>
+        <div className='flex flex-col lg:flex-row w-full'>
+          <div className='bg-slate-200 h-64 w-[90%] mx-auto shadow-lg rounded-md lg:h-96 lg:w-[55%]'></div>
+          <div className='bg-slate-200 h-64 w-[90%] mt-5 mx-auto shadow-lg rounded-md lg:mt-0 lg:h-96 lg:w-[40%]'></div>
+        </div>
+        <div className='flex flex-col lg:flex-row w-full mt-5'>
+          <div className='bg-slate-200 h-64 w-[90%] mx-auto shadow-lg rounded-md lg:h-96 lg:w-[55%]'></div>
+          <div className='bg-slate-200 h-64 w-[90%] mt-5 mx-auto shadow-lg rounded-md lg:mt-0 lg:h-96 lg:w-[40%]'></div>
+        </div>
+      </div>
     </Layout>
   );
 }
