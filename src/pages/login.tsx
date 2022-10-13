@@ -24,7 +24,7 @@ export default function Login() {
           </div>
 
           <button className='mt-5 bg-purple-500 p-4 w-full rounded-sm hover:bg-purple-600 transition-colors duration-300'>
-            Login
+            LOGIN
           </button>
           <h2 className='mt-5 text-gray-500 text-lg hover:cursor-pointer hover:text-gray-400'>forget password?</h2>
         </div>
