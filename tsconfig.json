@@ -28,10 +28,12 @@
       "@/server/*": ["src/server/*"],
       "@/functions/*": ["modules/*"],
       "@/store/*": ["src/store/*"],
-      "@/types": ["src/types.ts"],
+      "@/types": ["src/utils/types.ts"],
       "@/styles/*": [ "styles/*"],
       "@/theme/*": [ "theme/*"],
       "@/theme": [ "theme/index.ts"],
+      "@/repo/*": [ "src/server/repository/*"],
+      "@/svc/*": [ "src/server/services/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts","**/*.tsx"],

@@ -22,11 +22,6 @@ model User {
   username   String
   password   String
   salt       String
-}
 
-model Post {
-  id      Int     @id @default(autoincrement())
-  title   String
-  content String
-  images  String?
+  @@unique([username])
 }

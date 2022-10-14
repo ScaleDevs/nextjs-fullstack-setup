@@ -1,9 +1,17 @@
 import * as React from 'react';
 import Head from 'next/head';
+import { trpc } from '@/utils/trpc';
 
 export interface ILoginProps {}
 
 export default function Login() {
+  const { data, mutate } = trpc.useMutation(['auth.signIn']);
+  const signIn = async () => {
+    console.log('SIGIN LOG');
+    mutate({ username: 'mbutalid1', password: 'admin123' });
+    console.log(data);
+  };
+
   return (
     <div>
       <Head>
@@ -23,7 +31,10 @@ export default function Login() {
             <input type='password' placeholder='password' className='rounded-sm p-4' />
           </div>
 
-          <button className='mt-5 bg-purple-500 p-4 w-full rounded-sm hover:bg-purple-600 transition-colors duration-300'>
+          <button
+            className='mt-5 bg-purple-500 p-4 w-full rounded-sm hover:bg-purple-600 transition-colors duration-300'
+            onClick={signIn}
+          >
             LOGIN
           </button>
           <h2 className='mt-5 text-gray-500 text-lg hover:cursor-pointer hover:text-gray-400'>forget password?</h2>
