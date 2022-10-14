@@ -6,6 +6,7 @@ export interface ILoginProps {}
 
 export default function Login() {
   const { data, mutate } = trpc.useMutation(['auth.signIn']);
+
   const signIn = async () => {
     console.log('SIGIN LOG');
     mutate({ username: 'mbutalid1', password: 'admin123' });

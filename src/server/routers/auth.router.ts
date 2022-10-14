@@ -1,15 +1,26 @@
 import { z } from 'zod';
-import { setCookie } from 'cookies-next';
+import { setCookie, getCookie } from 'cookies-next';
 import { createRouter } from '../createRouter';
 import { AuthService } from '@/svc/auth.service';
 import { constants } from '../constants';
 
 export const authRouter = createRouter()
-  .query('verifyToken', {
+  .query('isSignedIn', {
     input: z.string(),
-    async resolve({ input }) {
-      const token = await AuthService.verifyToken(input);
-      return token;
+    async resolve({ ctx, input }) {
+      const accessToken = input;
+      const refreshToken = getCookie('pandevs101RefreshToken', { req: ctx.req, res: ctx.res as any })?.toString();
+
+      if (refreshToken) {
+        const token = await AuthService.isSignedIn(accessToken, refreshToken);
+        return token;
+      }
+
+      return {
+        code: 'no_refresh_token',
+        statusCode: 400,
+        isSignedIn: false,
+      };
     },
   })
   .query('generateKeys', {
