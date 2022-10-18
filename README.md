@@ -12,8 +12,8 @@ This is a Next.js fullstack setup template (Helpful for small apps)
 ## ENV VARS
 
 - DATABASE_URL = pirsma connection to database (mongodb, planetscale, mysql)
-- JWT_PUBLIC_KEY = used in verifying jwt-tokens
-- JWT_PRIVATE_KEY = used in signing jwt-tokens
-- JWT_ACCESS_TOKEN_EXP = access token expiration
-- JWT_REFRESH_TOKEN_EXP = refresh token expiration
-- JWT_REFRESH_TOKEN_COOKIE_EXP = refresh token cookie max age
+- AUTH0_SECRET = "create random auth secret"
+- AUTH0_BASE_URL = "http://localhost:3000"
+- AUTH0_ISSUER_BASE_URL = "found in application settings as Domain"
+- AUTH0_CLIENT_ID = "found in application settings as Client ID"
+- AUTH0_CLIENT_SECRET = "found in application settings as Client Secret"
