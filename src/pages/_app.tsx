@@ -3,11 +3,16 @@ import { loggerLink } from '@trpc/client/links/loggerLink';
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 import type { AppType } from 'next/app';
 import superjson from 'superjson';
+import { UserProvider } from '@auth0/nextjs-auth0';
 import { AppRouter } from '@/server/routers/_app';
 
 import '../styles/globals.css';
 
-const MyApp: AppType = ({ Component, pageProps }) => <Component {...pageProps} />;
+const MyApp: AppType = ({ Component, pageProps }) => (
+  <UserProvider>
+    <Component {...pageProps} />
+  </UserProvider>
+);
 
 export default withTRPC<AppRouter>({
   config({ ctx }) {
