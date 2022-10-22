@@ -1,3 +1,4 @@
+import * as trpc from '@trpc/server';
 import { CognitoIdentityProviderClient, AdminCreateUserCommand } from '@aws-sdk/client-cognito-identity-provider';
 
 const client = new CognitoIdentityProviderClient({
@@ -16,8 +17,12 @@ export const adminCreateUser = async (email: string) => {
     });
 
     await client.send(command);
-  } catch (err) {
-    console.log('ERR');
-    console.log(err);
+    return { result: true };
+  } catch (err: any) {
+    throw new trpc.TRPCError({
+      code: 'CONFLICT',
+      message: err.__type,
+      cause: err,
+    });
   }
 };
