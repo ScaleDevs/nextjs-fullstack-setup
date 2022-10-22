@@ -8,6 +8,7 @@ This is a Next.js fullstack setup template (Helpful for small apps)
 - trpc
 - zustand
 - prisma
+- auth0
 
 ## ENV VARS
 
