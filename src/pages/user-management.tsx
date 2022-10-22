@@ -23,7 +23,7 @@ function Users() {
     },
   });
 
-  const createUser = (formData: { email: string }) => {
+  const createUser = (formData: typeof schema._input) => {
     mutate(formData.email, {
       onSuccess() {
         setErrMessage(null);

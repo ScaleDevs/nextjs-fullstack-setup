@@ -1,18 +1,36 @@
 import * as trpc from '@trpc/server';
-import { CognitoIdentityProviderClient, AdminCreateUserCommand } from '@aws-sdk/client-cognito-identity-provider';
+import crypto from 'crypto';
+import {
+  CognitoIdentityProviderClient,
+  AdminCreateUserCommand,
+  InitiateAuthCommand,
+  RespondToAuthChallengeCommand,
+  AuthFlowType,
+  ChallengeNameType,
+  AdminUpdateUserAttributesCommand,
+} from '@aws-sdk/client-cognito-identity-provider';
+import { constants } from '../constants';
 
 const client = new CognitoIdentityProviderClient({
-  region: process.env.AWS_CONFIG_CLIENT_REGION,
+  region: constants.Region,
   credentials: {
-    accessKeyId: process.env.AWS_CONFIG_CLIENT_ACCESS_KEY_ID as string,
-    secretAccessKey: process.env.AWS_CONFIG_CLIENT_SECRET_KEY as string,
+    accessKeyId: constants.AccessKeyId as string,
+    secretAccessKey: constants.SecretAccessKey as string,
   },
 });
+
+const createSecretHash = (username: string) => {
+  const hmac = crypto.createHmac('sha256', constants.appClientSecret as string);
+
+  const data = hmac.update(username + constants.appClientId);
+
+  return data.digest('base64');
+};
 
 export const adminCreateUser = async (email: string) => {
   try {
     const command = new AdminCreateUserCommand({
-      UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      UserPoolId: constants.UserPoolId,
       Username: email,
     });
 
@@ -21,6 +39,75 @@ export const adminCreateUser = async (email: string) => {
   } catch (err: any) {
     throw new trpc.TRPCError({
       code: 'CONFLICT',
+      message: err.__type,
+      cause: err,
+    });
+  }
+};
+
+export const initiateAuth = async (username: string, password: string) => {
+  try {
+    const command = new InitiateAuthCommand({
+      ClientId: constants.appClientId,
+      AuthFlow: AuthFlowType.USER_PASSWORD_AUTH,
+      AuthParameters: {
+        USERNAME: username,
+        PASSWORD: password,
+        SECRET_HASH: createSecretHash(username),
+      },
+    });
+
+    return await client.send(command);
+  } catch (err: any) {
+    console.log('err');
+    console.log(err);
+    throw new trpc.TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: err.__type,
+      cause: err,
+    });
+  }
+};
+
+export const respondToNewPasswordAuthChallenge = async (session: string, username: string, newPassword: string) => {
+  try {
+    const command = new RespondToAuthChallengeCommand({
+      ClientId: constants.appClientId,
+      ChallengeName: ChallengeNameType.NEW_PASSWORD_REQUIRED,
+      Session: session,
+      ChallengeResponses: {
+        SECRET_HASH: createSecretHash(username),
+        USERNAME: username,
+        NEW_PASSWORD: newPassword,
+      },
+    });
+
+    return await client.send(command);
+  } catch (err: any) {
+    console.log('err');
+    console.log(err);
+    throw new trpc.TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: err.__type,
+      cause: err,
+    });
+  }
+};
+
+export const adminVerifyEmail = async (username: string) => {
+  try {
+    const command = new AdminUpdateUserAttributesCommand({
+      UserPoolId: constants.UserPoolId,
+      Username: username,
+      UserAttributes: [{ Name: 'email_verified', Value: 'True' }],
+    });
+
+    await client.send(command);
+  } catch (err: any) {
+    console.log('err');
+    console.log(err);
+    throw new trpc.TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
       message: err.__type,
       cause: err,
     });
