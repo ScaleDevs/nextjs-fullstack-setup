@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "1.9.2",
+    "@aws-sdk/client-cognito-identity-provider": "^3.194.0",
     "@prisma/client": "4.4.0",
     "@trpc/client": "9.27.4",
     "@trpc/next": "9.27.4",

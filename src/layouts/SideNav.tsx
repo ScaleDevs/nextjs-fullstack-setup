@@ -49,6 +49,9 @@ export default function SideNav() {
           <NavLink open={sideNavOpen} path='/'>
             Dashboard
           </NavLink>
+          <NavLink open={sideNavOpen} path='/user-management'>
+            Users
+          </NavLink>
           <NavLink open={sideNavOpen} path='/api/auth/logout'>
             Logout
           </NavLink>
