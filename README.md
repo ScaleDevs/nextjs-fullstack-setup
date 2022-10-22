@@ -18,3 +18,7 @@ This is a Next.js fullstack setup template (Helpful for small apps)
 - AUTH0_ISSUER_BASE_URL = "found in application settings as Domain"
 - AUTH0_CLIENT_ID = "found in application settings as Client ID"
 - AUTH0_CLIENT_SECRET = "found in application settings as Client Secret"
+
+## references
+
+- Auth0 email invite for applications (https://auth0.com/docs/customize/email/send-email-invitations-for-application-signup)
