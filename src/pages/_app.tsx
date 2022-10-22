@@ -1,9 +1,9 @@
+import type { AppType } from 'next/app';
 import { withTRPC } from '@trpc/next';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
-import type { AppType } from 'next/app';
-import superjson from 'superjson';
 import { UserProvider } from '@auth0/nextjs-auth0';
+import superjson from 'superjson';
 import { AppRouter } from '@/server/routers/_app';
 
 import '../styles/globals.css';

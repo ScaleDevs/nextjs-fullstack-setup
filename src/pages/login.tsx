@@ -10,9 +10,7 @@ export default function Login() {
   const { user, isLoading } = useUser();
   const router = useRouter();
 
-  const signIn = async () => {
-    router.push('/api/auth/login');
-  };
+  const signIn = async () => router.push('/api/auth/login');
 
   useEffect(() => {
     if (user) router.push('/');
