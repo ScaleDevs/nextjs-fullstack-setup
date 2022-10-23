@@ -8,17 +8,33 @@ This is a Next.js fullstack setup template (Helpful for small apps)
 - trpc
 - zustand
 - prisma
-- auth0
+- cognito
+- mailersend
 
 ## ENV VARS
 
 - DATABASE_URL = pirsma connection to database (mongodb, planetscale, mysql)
-- AUTH0_SECRET = "create random auth secret"
-- AUTH0_BASE_URL = "http://localhost:3000"
-- AUTH0_ISSUER_BASE_URL = "found in application settings as Domain"
-- AUTH0_CLIENT_ID = "found in application settings as Client ID"
-- AUTH0_CLIENT_SECRET = "found in application settings as Client Secret"
+- AWS_CONFIG_CLIENT_REGION={aws region}
+- AWS_CONFIG_CLIENT_ACCESS_KEY_ID={aws user account accesssKeyId (create a specific user for this and make sure to apply least privilege)}
+- AWS_CONFIG_CLIENT_SECRET_KEY={aws user account secret key (create a specific user for this and make sure to apply least privilege)}
+- AWS_CONFIG_CLIENT_APP_CLIENT_ID={cognito user pool app client id}
+- AWS_CONFIG_CLIENT_APP_SECRET={cognito user pool app client secret}
+- COGNITO_USER_POOL_ID={aws cognito user pool id}
+
+- GENERAL_APP_NAME={app name}
+- GENERAL_COMPANY_NAME={company name that uses this app}
+
+- MAILER_SEND_TEMPLATE_ID={mailer send template id}
+- MAILER_SEND_FROM_EMAIL={mailer send from email}
+- MAILER_SEND_FROM_NAME={mailer send from name}
+- MAILER_SEND_API_KEY={api key of your mailer send account domain}
 
 ## references
 
-- Auth0 email invite for applications (https://auth0.com/docs/customize/email/send-email-invitations-for-application-signup)
+- implement login redirect
+  - saving tokens
+
+- protect api routes
+- protect page routes
+- implement logout
+- remove auth0

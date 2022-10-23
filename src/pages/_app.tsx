@@ -2,17 +2,12 @@ import type { AppType } from 'next/app';
 import { withTRPC } from '@trpc/next';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
-import { UserProvider } from '@auth0/nextjs-auth0';
 import superjson from 'superjson';
 import { AppRouter } from '@/server/routers/_app';
 
 import '../styles/globals.css';
 
-const MyApp: AppType = ({ Component, pageProps }) => (
-  <UserProvider>
-    <Component {...pageProps} />
-  </UserProvider>
-);
+const MyApp: AppType = ({ Component, pageProps }) => <Component {...pageProps} />;
 
 export default withTRPC<AppRouter>({
   config({ ctx }) {

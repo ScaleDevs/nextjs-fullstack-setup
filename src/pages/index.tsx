@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Layout from '@/layouts/index';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 function Home() {
   return (
@@ -27,4 +26,4 @@ function Home() {
   );
 }
 
-export default withPageAuthRequired(Home);
+export default Home;
