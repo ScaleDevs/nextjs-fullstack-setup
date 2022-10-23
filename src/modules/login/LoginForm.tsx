@@ -1,7 +1,8 @@
-import * as React from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { FiEyeOff, FiEye } from 'react-icons/fi';
 import FadeIn from '@/components/FadeIn';
 import { trpc } from '@/utils/trpc';
 import { ChallengeNameType } from '@aws-sdk/client-cognito-identity-provider';
@@ -12,14 +13,15 @@ const schema = z.object({
 });
 
 export interface ILoginFormProps {
-  setForceChangePassword: React.Dispatch<React.SetStateAction<boolean>>;
-  setSession: React.Dispatch<React.SetStateAction<string>>;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  setForceChangePassword: Dispatch<SetStateAction<boolean>>;
+  setSession: Dispatch<SetStateAction<string>>;
+  setUsername: Dispatch<SetStateAction<string>>;
 }
 
 export default function LoginForm({ setForceChangePassword, setUsername, setSession }: ILoginFormProps) {
   const { mutate } = trpc.useMutation('auth.signIn');
-  const [errMessage, setErrMessage] = React.useState<string | null>(null);
+  const [errMessage, setErrMessage] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { register, handleSubmit } = useForm({
     resolver: zodResolver(schema),
@@ -28,6 +30,8 @@ export default function LoginForm({ setForceChangePassword, setUsername, setSess
       password: '',
     },
   });
+
+  const toggleShowPass = () => setShowPassword((val) => !val);
 
   const login = (formData: typeof schema._input) => {
     mutate(formData, {
@@ -63,7 +67,27 @@ export default function LoginForm({ setForceChangePassword, setUsername, setSess
       )}
       <form className='flex flex-col space-y-6 md:w-96' onSubmit={handleSubmit(login)}>
         <input className='p-4 rounded-sm' placeholder='enter email' {...register('username')} />
-        <input type='password' className='p-4 rounded-sm' placeholder='enter password' {...register('password')} />
+        <div className='w-full relative'>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            className='p-4 rounded-sm w-full'
+            placeholder='enter password'
+            {...register('password')}
+          />
+          {showPassword ? (
+            <FiEyeOff
+              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer'
+              size={30}
+              onClick={toggleShowPass}
+            />
+          ) : (
+            <FiEye
+              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer'
+              size={30}
+              onClick={toggleShowPass}
+            />
+          )}
+        </div>
         <button
           type='submit'
           className='mt-5 bg-purple-500 p-4 w-full rounded-sm hover:bg-purple-600 transition-colors duration-300'

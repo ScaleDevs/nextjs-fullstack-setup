@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import FadeIn from '@/components/FadeIn';
 import { trpc } from '@/utils/trpc';
 import { RegexValidations } from '@/utils/helper';
@@ -19,6 +20,7 @@ export interface IForceChangePasswordProps {
 export default function ForceChangePassword({ username, session, setForceChangePassword }: IForceChangePasswordProps) {
   const { mutate } = trpc.useMutation('auth.forceChangePassword');
   const [errMessage, setErrMessage] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [passMinCharLength, setPassMinCharLength] = useState(false);
   const [passNum, setPassNum] = useState(false);
   const [passLowCase, setPassLowCase] = useState(false);
@@ -35,6 +37,8 @@ export default function ForceChangePassword({ username, session, setForceChangeP
       newPassword: '',
     },
   });
+
+  const toggleShowPass = () => setShowPassword((val) => !val);
 
   const onPasswordValidation = (e: any) => {
     const newValue: string = e.target.value;
@@ -122,13 +126,28 @@ export default function ForceChangePassword({ username, session, setForceChangeP
       )}
       <form className='flex flex-col space-y-6 md:w-full' onSubmit={handleSubmit(forceChangePassword)}>
         <h1 className='text-center font-roboto text-xl'>You are required to change your password</h1>
-        <input
-          type='password'
-          className='p-4 rounded-sm'
-          placeholder='enter new password'
-          {...register('newPassword')}
-          onChange={onPasswordValidation}
-        />
+        <div className='w-full relative'>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            className='p-4 rounded-sm w-full'
+            placeholder='enter new password'
+            {...register('newPassword')}
+            onChange={onPasswordValidation}
+          />
+          {showPassword ? (
+            <FiEyeOff
+              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer'
+              size={30}
+              onClick={toggleShowPass}
+            />
+          ) : (
+            <FiEye
+              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer'
+              size={30}
+              onClick={toggleShowPass}
+            />
+          )}
+        </div>
         <div>
           <h1 className='text-lg text-left font-raleway font-medium pb-2'>Password Requirements:</h1>
           <ul className='text-left list-disc pl-5 font-raleway font-normal space-y-1'>
