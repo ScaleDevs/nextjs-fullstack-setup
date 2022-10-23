@@ -1,3 +1,5 @@
+import genString from 'randomstring';
+
 export const RegexValidations = {
   NumberOnly: /(^[0-9]+$|^$)/,
   NoNumber: /(^[a-zA-Z\s-'.]*$)/,
@@ -9,4 +11,39 @@ export const RegexValidations = {
   hasLowerCase: /[a-z]/,
   hasUpperCase: /[A-Z]/,
   hasSpecialChar: /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/,
+};
+
+export const createTempPassword = () => {
+  return (
+    genString.generate({
+      length: 2,
+      charset: 'alphanumeric',
+    }) +
+    genString.generate({
+      length: 2,
+      charset: 'numeric',
+    }) +
+    genString.generate({
+      length: 1,
+      charset: '!@#$%^&*()_+~`|}{[]:;?><,./-=\\',
+    }) +
+    genString.generate({
+      length: 2,
+      charset: 'numeric',
+    }) +
+    genString.generate({
+      length: 2,
+      charset: 'alphabetic',
+      capitalization: 'uppercase',
+    }) +
+    genString.generate({
+      length: 1,
+      charset: '!@#$%^&*()_+~`|}{[]:;?><,./-=\\',
+    }) +
+    genString.generate({
+      length: 2,
+      charset: 'alphabetic',
+      capitalization: 'lowercase',
+    })
+  );
 };

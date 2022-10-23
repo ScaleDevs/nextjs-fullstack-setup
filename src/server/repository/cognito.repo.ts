@@ -7,7 +7,10 @@ import {
   AuthFlowType,
   ChallengeNameType,
   AdminUpdateUserAttributesCommand,
+  MessageActionType,
 } from '@aws-sdk/client-cognito-identity-provider';
+
+import { createTempPassword } from '@/utils/helper';
 import { constants } from '../constants';
 import { createUsertrpcErrorHandling, trpcErrorHandling } from '../util';
 
@@ -29,14 +32,19 @@ const createSecretHash = (username: string) => {
 
 export const adminCreateUser = async (email: string) => {
   try {
+    const tmpPwd = createTempPassword();
+
     const command = new AdminCreateUserCommand({
       UserPoolId: constants.UserPoolId,
       Username: email,
+      MessageAction: MessageActionType.SUPPRESS,
+      TemporaryPassword: tmpPwd,
     });
 
     await client.send(command);
     return { result: true };
   } catch (err: any) {
+    console.log(err);
     createUsertrpcErrorHandling(err);
   }
 };
