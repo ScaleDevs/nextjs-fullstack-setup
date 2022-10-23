@@ -11,6 +11,7 @@ module.exports = {
       sans: ['Helvetica', 'Arial', 'sans-serif'],
       roboto: ['Roboto Condensed', 'sans-serif'],
       pacifico: ['Pacifico', 'cursive'],
+      raleway: ['Raleway', 'sans-serif'],
     },
     extend: {
       animationDuration: {

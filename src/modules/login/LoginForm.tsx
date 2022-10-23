@@ -34,16 +34,14 @@ export default function LoginForm({ setForceChangePassword, setUsername, setSess
       onSuccess(data) {
         console.log(data);
         setErrMessage(null);
-        if (data.ChallengeName === ChallengeNameType.NEW_PASSWORD_REQUIRED) {
+        if (data?.ChallengeName === ChallengeNameType.NEW_PASSWORD_REQUIRED) {
           setForceChangePassword(true);
           setUsername(formData.username);
           data.Session && setSession(data.Session);
         } else console.log('redirect to dashboard');
       },
       onError(error) {
-        console.log('err');
-        console.log(error.message);
-        setErrMessage('Something went wrong');
+        setErrMessage(error.message);
 
         setTimeout(() => {
           setErrMessage(null);
@@ -56,13 +54,16 @@ export default function LoginForm({ setForceChangePassword, setUsername, setSess
     <div className='bg-zinc-900 p-10 rounded-md text-center w-3/4 md:w-auto'>
       <h1 className='font-roboto text-4xl pb-6'>LOGIN</h1>
       {!!errMessage && (
-        <FadeIn>
-          <div className='bg-rose-600 rounded-sm p-4 opacity-90 text-center'>{errMessage}</div>
-        </FadeIn>
+        <>
+          <FadeIn>
+            <div className='bg-rose-600 rounded-sm p-4 opacity-90 text-center'>{errMessage}</div>
+          </FadeIn>
+          <br />
+        </>
       )}
       <form className='flex flex-col space-y-6 md:w-96' onSubmit={handleSubmit(login)}>
         <input className='p-4 rounded-sm' placeholder='enter email' {...register('username')} />
-        <input className='p-4 rounded-sm' placeholder='enter password' {...register('password')} />
+        <input type='password' className='p-4 rounded-sm' placeholder='enter password' {...register('password')} />
         <button
           type='submit'
           className='mt-5 bg-purple-500 p-4 w-full rounded-sm hover:bg-purple-600 transition-colors duration-300'

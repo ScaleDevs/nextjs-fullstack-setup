@@ -18,7 +18,7 @@ export default function Login() {
 
       <div className='w-full h-screen bg-zinc-800 flex flex-row justify-center items-center font-roboto'>
         {forceChangePassword ? (
-          <ForceChangePassword username={username} session={session} />
+          <ForceChangePassword username={username} session={session} setForceChangePassword={setForceChangePassword} />
         ) : (
           <LoginForm setForceChangePassword={setForceChangePassword} setUsername={setUsername} setSession={setSession} />
         )}

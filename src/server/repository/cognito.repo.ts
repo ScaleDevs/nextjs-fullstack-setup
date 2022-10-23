@@ -1,4 +1,3 @@
-import * as trpc from '@trpc/server';
 import crypto from 'crypto';
 import {
   CognitoIdentityProviderClient,
@@ -10,6 +9,7 @@ import {
   AdminUpdateUserAttributesCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { constants } from '../constants';
+import { createUsertrpcErrorHandling, trpcErrorHandling } from '../util';
 
 const client = new CognitoIdentityProviderClient({
   region: constants.Region,
@@ -37,11 +37,7 @@ export const adminCreateUser = async (email: string) => {
     await client.send(command);
     return { result: true };
   } catch (err: any) {
-    throw new trpc.TRPCError({
-      code: 'CONFLICT',
-      message: err.__type,
-      cause: err,
-    });
+    createUsertrpcErrorHandling(err);
   }
 };
 
@@ -59,13 +55,7 @@ export const initiateAuth = async (username: string, password: string) => {
 
     return await client.send(command);
   } catch (err: any) {
-    console.log('err');
-    console.log(err);
-    throw new trpc.TRPCError({
-      code: 'INTERNAL_SERVER_ERROR',
-      message: err.__type,
-      cause: err,
-    });
+    trpcErrorHandling(err);
   }
 };
 
@@ -84,13 +74,7 @@ export const respondToNewPasswordAuthChallenge = async (session: string, usernam
 
     return await client.send(command);
   } catch (err: any) {
-    console.log('err');
-    console.log(err);
-    throw new trpc.TRPCError({
-      code: 'INTERNAL_SERVER_ERROR',
-      message: err.__type,
-      cause: err,
-    });
+    trpcErrorHandling(err);
   }
 };
 
@@ -104,12 +88,6 @@ export const adminVerifyEmail = async (username: string) => {
 
     await client.send(command);
   } catch (err: any) {
-    console.log('err');
-    console.log(err);
-    throw new trpc.TRPCError({
-      code: 'INTERNAL_SERVER_ERROR',
-      message: err.__type,
-      cause: err,
-    });
+    trpcErrorHandling(err);
   }
 };
