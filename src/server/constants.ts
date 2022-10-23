@@ -5,4 +5,16 @@ export const constants = {
   SecretAccessKey: process.env.AWS_CONFIG_CLIENT_SECRET_KEY,
   appClientId: process.env.AWS_CONFIG_CLIENT_APP_CLIENT_ID,
   appClientSecret: process.env.AWS_CONFIG_CLIENT_APP_SECRET,
+
+  general: {
+    appName: process.env.GENERAL_APP_NAME,
+    companyName: process.env.GENERAL_COMPANY_NAME,
+  },
+
+  mailerSend: {
+    templateId: process.env.MAILER_SEND_TEMPLATE_ID,
+    fromEmail: process.env.MAILER_SEND_FROM_EMAIL,
+    fromName: process.env.MAILER_SEND_FROM_NAME,
+    apiKey: process.env.MAILER_SEND_API_KEY,
+  },
 };

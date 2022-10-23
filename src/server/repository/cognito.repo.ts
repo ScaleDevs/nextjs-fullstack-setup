@@ -10,7 +10,6 @@ import {
   MessageActionType,
 } from '@aws-sdk/client-cognito-identity-provider';
 
-import { createTempPassword } from '@/utils/helper';
 import { constants } from '../constants';
 import { createUsertrpcErrorHandling, trpcErrorHandling } from '../util';
 
@@ -30,10 +29,8 @@ const createSecretHash = (username: string) => {
   return data.digest('base64');
 };
 
-export const adminCreateUser = async (email: string) => {
+export const adminCreateUser = async (email: string, tmpPwd: string) => {
   try {
-    const tmpPwd = createTempPassword();
-
     const command = new AdminCreateUserCommand({
       UserPoolId: constants.UserPoolId,
       Username: email,
@@ -42,7 +39,7 @@ export const adminCreateUser = async (email: string) => {
     });
 
     await client.send(command);
-    return { result: true };
+    return true;
   } catch (err: any) {
     console.log(err);
     createUsertrpcErrorHandling(err);

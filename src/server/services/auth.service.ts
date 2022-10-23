@@ -1,8 +1,13 @@
 import { adminCreateUser, adminVerifyEmail, initiateAuth, respondToNewPasswordAuthChallenge } from '@/repo/cognito.repo';
+import { sendUserInvite } from '@/repo/mailersend.repo';
+import { createTempPassword } from '@/utils/helper';
 
 class Service {
   public async createUser(email: string) {
-    return adminCreateUser(email);
+    const tmpPwd = createTempPassword();
+    const result = await adminCreateUser(email, tmpPwd);
+    await sendUserInvite(email, tmpPwd);
+    return result;
   }
 
   public async signIn(username: string, password: string) {
