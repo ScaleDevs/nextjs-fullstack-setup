@@ -8,6 +8,7 @@ import {
   ChallengeNameType,
   AdminUpdateUserAttributesCommand,
   MessageActionType,
+  RevokeTokenCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 
 import { constants } from '../constants';
@@ -93,6 +94,24 @@ export const adminVerifyEmail = async (username: string) => {
 
     await client.send(command);
   } catch (err: any) {
+    trpcErrorHandling(err);
+  }
+};
+
+export const revokeToken = async (refreshToken: string) => {
+  try {
+    const command = new RevokeTokenCommand({
+      ClientId: constants.appClientId,
+      ClientSecret: constants.appClientSecret,
+      Token: refreshToken,
+    });
+
+    await client.send(command);
+
+    console.log('=== REVOKE TOKEN SUCCESSFULY');
+
+    return true;
+  } catch (err) {
     trpcErrorHandling(err);
   }
 };

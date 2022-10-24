@@ -1,7 +1,8 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import useAppStoreTrack from '@/store/app.store';
-import { useRouter } from 'next/router';
+import { trpc } from '@/utils/trpc';
 
 export interface ISideNavProps {}
 
@@ -14,8 +15,10 @@ interface INavLinkProps {
 
 const NavLink = ({ open, children, path, logout }: INavLinkProps) => {
   const router = useRouter();
+  const { mutate } = trpc.useMutation('auth.signOut');
 
   const signOut = () => {
+    mutate();
     router.push(path);
   };
 

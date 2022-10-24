@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { createRouter } from '../createRouter';
 import { AuthService } from '@/svc/auth.service';
-import { setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import { constants } from '../constants';
 
 export const authRouter = createRouter()
@@ -37,5 +37,20 @@ export const authRouter = createRouter()
     }),
     resolve({ input }) {
       return AuthService.forceChangePassword(input.session, input.username, input.newPassword);
+    },
+  })
+  .mutation('signOut', {
+    async resolve({ ctx }) {
+      const refreshToken = getCookie('refreshToken', { req: ctx.req, res: ctx.res as any });
+
+      if (!refreshToken)
+        return {
+          status: false,
+          message: 'missing refresh token',
+        };
+
+      await AuthService.signOut(refreshToken.toString());
+
+      deleteCookie('refreshToken', { req: ctx.req, res: ctx.res as any });
     },
   });

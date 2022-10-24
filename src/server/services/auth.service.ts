@@ -1,4 +1,10 @@
-import { adminCreateUser, adminVerifyEmail, initiateAuth, respondToNewPasswordAuthChallenge } from '@/repo/cognito.repo';
+import {
+  adminCreateUser,
+  adminVerifyEmail,
+  initiateAuth,
+  respondToNewPasswordAuthChallenge,
+  revokeToken,
+} from '@/repo/cognito.repo';
 import { sendUserInvite } from '@/repo/mailersend.repo';
 import { createTempPassword } from '@/utils/helper';
 
@@ -18,6 +24,10 @@ class Service {
     const result = await respondToNewPasswordAuthChallenge(session, username, newPassword);
     await adminVerifyEmail(username);
     return result;
+  }
+
+  public async signOut(refreshToken: string) {
+    return revokeToken(refreshToken);
   }
 }
 
