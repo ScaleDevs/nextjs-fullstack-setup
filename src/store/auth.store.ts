@@ -4,9 +4,14 @@ import { devtools } from 'zustand/middleware';
 
 export type AuthStates = {
   authLoader: boolean;
+
   userId: string | null;
 
+  idToken: string | null;
+
   accessToken: string | null;
+
+  expiresIn: string | null;
 
   isSignedIn: boolean;
 
@@ -22,7 +27,11 @@ const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeA
 
   userId: null,
 
+  idToken: null,
+
   accessToken: null,
+
+  expiresIn: null,
 
   isSignedIn: false,
 };

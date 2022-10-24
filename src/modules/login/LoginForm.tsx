@@ -1,11 +1,15 @@
 import { useState, Dispatch, SetStateAction } from 'react';
+import { useRouter } from 'next/router';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
-import FadeIn from '@/components/FadeIn';
-import { trpc } from '@/utils/trpc';
 import { ChallengeNameType } from '@aws-sdk/client-cognito-identity-provider';
+
+import FadeIn from '@/components/FadeIn';
+import Loader from '@/components/Loader';
+import { trpc } from '@/utils/trpc';
+import useAuthStoreTrack from '@/store/auth.store';
 
 const schema = z.object({
   username: z.string(),
@@ -19,7 +23,9 @@ export interface ILoginFormProps {
 }
 
 export default function LoginForm({ setForceChangePassword, setUsername, setSession }: ILoginFormProps) {
-  const { mutate } = trpc.useMutation('auth.signIn');
+  const router = useRouter();
+  const { mutate, isLoading } = trpc.useMutation('auth.signIn');
+  const { setAuthState } = useAuthStoreTrack();
   const [errMessage, setErrMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -42,7 +48,13 @@ export default function LoginForm({ setForceChangePassword, setUsername, setSess
           setForceChangePassword(true);
           setUsername(formData.username);
           data.Session && setSession(data.Session);
-        } else console.log('redirect to dashboard');
+        } else {
+          setAuthState('accessToken', data?.AuthenticationResult?.AccessToken);
+          setAuthState('idToken', data?.AuthenticationResult?.IdToken);
+          setAuthState('expiresIn', data?.AuthenticationResult?.ExpiresIn);
+          setAuthState('expiresIn', data?.AuthenticationResult?.ExpiresIn);
+          router.push('/');
+        }
       },
       onError(error) {
         setErrMessage(error.message);
@@ -92,7 +104,7 @@ export default function LoginForm({ setForceChangePassword, setUsername, setSess
           type='submit'
           className='mt-5 bg-purple-500 p-4 w-full rounded-sm hover:bg-purple-600 transition-colors duration-300'
         >
-          LOGIN
+          {isLoading ? <Loader /> : 'LOGIN'}
         </button>
       </form>
       <h1 className='text-lg font-roboto text-left pt-4'>Forgot Password?</h1>
