@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import useAppStoreTrack from '@/store/app.store';
+import { useRouter } from 'next/router';
 
 export interface ISideNavProps {}
 
@@ -8,9 +9,25 @@ interface INavLinkProps {
   open: boolean;
   children: any;
   path: string;
+  logout?: boolean;
 }
 
-const NavLink = ({ open, children, path }: INavLinkProps) => {
+const NavLink = ({ open, children, path, logout }: INavLinkProps) => {
+  const router = useRouter();
+
+  const signOut = () => {
+    router.push(path);
+  };
+
+  if (logout)
+    return (
+      <li className={`${open ? '' : 'hidden'}`} onClick={signOut}>
+        <div className='p-3 w-full rounded-md hover:bg-gray-100 hover:cursor-pointer opacity-0 animate-fadeIn animation-delay-100 animation-duration-500 animation-fill-forwards duration-300'>
+          <a>{children}</a>
+        </div>
+      </li>
+    );
+
   return (
     <li className={`${open ? '' : 'hidden'}`}>
       <Link href={path} className='w-full'>
@@ -52,7 +69,7 @@ export default function SideNav() {
           <NavLink open={sideNavOpen} path='/user-management'>
             Users
           </NavLink>
-          <NavLink open={sideNavOpen} path='/api/auth/logout'>
+          <NavLink open={sideNavOpen} path='/login' logout>
             Logout
           </NavLink>
         </ul>
