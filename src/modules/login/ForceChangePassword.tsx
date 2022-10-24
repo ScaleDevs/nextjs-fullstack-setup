@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 import z from 'zod';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+
 import FadeIn from '@/components/FadeIn';
 import { trpc } from '@/utils/trpc';
 import { RegexValidations } from '@/utils/helper';
+import useAuthStoreTrack from '@/store/auth.store';
 
 const schema = z.object({
   newPassword: z.string(),
@@ -18,7 +21,9 @@ export interface IForceChangePasswordProps {
 }
 
 export default function ForceChangePassword({ username, session, setForceChangePassword }: IForceChangePasswordProps) {
+  const router = useRouter();
   const { mutate } = trpc.useMutation('auth.forceChangePassword');
+  const { setAuthState } = useAuthStoreTrack();
   const [errMessage, setErrMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [passMinCharLength, setPassMinCharLength] = useState(false);
@@ -85,7 +90,6 @@ export default function ForceChangePassword({ username, session, setForceChangeP
   };
 
   const forceChangePassword = (formData: typeof schema._input) => {
-    console.log('formData', formData, conditionsPassed);
     if (conditionsPassed < 5) {
       setErrMessage('Password does not meet requirements');
       setTimeout(() => {
@@ -98,8 +102,11 @@ export default function ForceChangePassword({ username, session, setForceChangeP
       { username, newPassword: formData.newPassword, session },
       {
         onSuccess(data) {
-          console.log('HERE');
-          console.log(data);
+          setAuthState('accessToken', data?.AuthenticationResult?.AccessToken);
+          setAuthState('idToken', data?.AuthenticationResult?.IdToken);
+          setAuthState('expiresIn', data?.AuthenticationResult?.ExpiresIn);
+          setAuthState('expiresIn', data?.AuthenticationResult?.ExpiresIn);
+          router.push('/');
         },
         onError(error) {
           if (error.message.includes('Invalid Session')) setErrMessage('Invalid Session, kindly login again');
