@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { createRouter } from '../createRouter';
 import { AuthService } from '@/svc/auth.service';
+import { setCookie } from 'cookies-next';
+import { constants } from '../constants';
 
 export const authRouter = createRouter()
   .mutation('createUser', {
@@ -14,8 +16,17 @@ export const authRouter = createRouter()
       username: z.string().email(),
       password: z.string(),
     }),
-    resolve({ input }) {
-      return AuthService.signIn(input.username, input.password);
+    async resolve({ ctx, input }) {
+      const result = await AuthService.signIn(input.username, input.password);
+
+      setCookie('refreshToken', result?.AuthenticationResult?.RefreshToken, {
+        req: ctx.req,
+        res: ctx.res as any,
+        maxAge: constants.cognitoRefreshTokenCookieAge,
+        httpOnly: true,
+      });
+
+      return result;
     },
   })
   .mutation('forceChangePassword', {
