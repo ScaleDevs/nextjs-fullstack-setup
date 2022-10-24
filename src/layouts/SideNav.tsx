@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import useAppStoreTrack from '@/store/app.store';
+import useAuthStoreTrack from '@/store/auth.store';
 import { trpc } from '@/utils/trpc';
 
 export interface ISideNavProps {}
@@ -15,10 +16,12 @@ interface INavLinkProps {
 
 const NavLink = ({ open, children, path, logout }: INavLinkProps) => {
   const router = useRouter();
+  const { resetAuthState } = useAuthStoreTrack();
   const { mutate } = trpc.useMutation('auth.signOut');
 
   const signOut = () => {
     mutate();
+    resetAuthState();
     router.push(path);
   };
 
@@ -26,7 +29,7 @@ const NavLink = ({ open, children, path, logout }: INavLinkProps) => {
     return (
       <li className={`${open ? '' : 'hidden'}`} onClick={signOut}>
         <div className='p-3 w-full rounded-md hover:bg-gray-100 hover:cursor-pointer opacity-0 animate-fadeIn animation-delay-100 animation-duration-500 animation-fill-forwards duration-300'>
-          <a>{children}</a>
+          {children}
         </div>
       </li>
     );

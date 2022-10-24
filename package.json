@@ -19,6 +19,7 @@
     "@trpc/next": "9.27.4",
     "@trpc/react": "9.27.4",
     "@trpc/server": "9.27.4",
+    "aws-jwt-verify": "^3.1.0",
     "bcrypt": "5.1.0",
     "cookies-next": "^2.1.1",
     "crypto": "^1.0.1",
