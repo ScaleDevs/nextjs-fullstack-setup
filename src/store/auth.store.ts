@@ -7,6 +7,12 @@ export type AuthStates = {
 
   userId: string | null;
 
+  username: string | null;
+
+  session: string | null;
+
+  forceChangePassword: boolean;
+
   idToken: string | null;
 
   accessToken: string | null;
@@ -25,6 +31,10 @@ export type AuthStates = {
 const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState'> = {
   authLoader: false,
 
+  username: null,
+
+  session: null,
+
   userId: null,
 
   idToken: null,
@@ -34,6 +44,8 @@ const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeA
   expiresIn: null,
 
   isSignedIn: false,
+
+  forceChangePassword: false,
 };
 
 const stateStore = devtools((set) => ({

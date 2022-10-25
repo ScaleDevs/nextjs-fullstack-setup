@@ -25,6 +25,7 @@
       "@/layouts/*": ["src/layouts/*"],
       "@/components/*": ["src/components/*"],
       "@/modules/*": ["src/modules/*"],
+      "@/hooks/*": ["src/modules/hooks/*"],
       "@/utils/*": ["src/utils/*"],
       "@/server/*": ["src/server/*"],
       "@/functions/*": ["modules/*"],

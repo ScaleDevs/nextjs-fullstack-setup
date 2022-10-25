@@ -1,18 +1,32 @@
+import { CognitoJwtVerifier } from 'aws-jwt-verify';
 import { z } from 'zod';
 import { createRouter } from '../createRouter';
-import { UserService } from '@/svc/user.service';
+import { constants } from '../constants';
 
-export const userRouter = createRouter().mutation('registerUser', {
-  input: z.object({
-    firstName: z.string(),
-    middleName: z.string(),
-    lastName: z.string(),
-    birthday: z.date(),
-    address: z.string(),
-    username: z.string(),
-    password: z.string(),
-  }),
-  resolve({ input }) {
-    return UserService.registerUser(input);
-  },
+const verifier = CognitoJwtVerifier.create({
+  userPoolId: constants.UserPoolId as string,
+  tokenUse: 'access',
+  clientId: constants.appClientId as string,
 });
+
+export const userRouter = createRouter()
+  .middleware(async ({ ctx, next }) => {
+    console.log('MIDDLEWARE');
+    console.log(ctx.req.headers);
+    return next();
+  })
+  .mutation('hi', {
+    input: z.string(),
+    async resolve({ input }) {
+      try {
+        console.log('hey');
+        const payload = await verifier.verify(input);
+        console.log('Token is valid:', payload);
+
+        return 'hi';
+      } catch (err) {
+        console.log('Error here =======');
+        return false;
+      }
+    },
+  });

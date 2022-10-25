@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,21 +8,18 @@ import FadeIn from '@/components/FadeIn';
 import { trpc } from '@/utils/trpc';
 import { RegexValidations } from '@/utils/helper';
 import useAuthStoreTrack from '@/store/auth.store';
+import useAuthHook from '@/hooks/auth.hooks';
+import Loader from '@/components/Loader';
 
 const schema = z.object({
   newPassword: z.string(),
 });
 
-export interface IForceChangePasswordProps {
-  username: string;
-  session: string;
-  setForceChangePassword: React.Dispatch<React.SetStateAction<boolean>>;
-}
+export default function ForceChangePassword() {
+  const { mutate, isLoading } = trpc.useMutation('auth.forceChangePassword');
+  const { setAuthState, session, username } = useAuthStoreTrack();
+  const { updateAuthStates } = useAuthHook();
 
-export default function ForceChangePassword({ username, session, setForceChangePassword }: IForceChangePasswordProps) {
-  const router = useRouter();
-  const { mutate } = trpc.useMutation('auth.forceChangePassword');
-  const { setAuthState } = useAuthStoreTrack();
   const [errMessage, setErrMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [passMinCharLength, setPassMinCharLength] = useState(false);
@@ -98,17 +94,21 @@ export default function ForceChangePassword({ username, session, setForceChangeP
       return;
     }
 
+    if (!session || !username) {
+      setErrMessage('Invalid Session, Login again');
+      setTimeout(() => {
+        setErrMessage(null);
+      }, 5000);
+      return;
+    }
+
     mutate(
-      { username, newPassword: formData.newPassword, session },
+      { username, newPassword: formData.newPassword, session: session },
       {
         onSuccess(data) {
-          setAuthState('accessToken', data?.AuthenticationResult?.AccessToken);
-          setAuthState('idToken', data?.AuthenticationResult?.IdToken);
-          setAuthState('expiresIn', data?.AuthenticationResult?.ExpiresIn);
-          setAuthState('expiresIn', data?.AuthenticationResult?.ExpiresIn);
-          router.push('/');
+          if (data) updateAuthStates(data);
         },
-        onError(error) {
+        onError(error: any) {
           if (error.message.includes('Invalid Session')) setErrMessage('Invalid Session, kindly login again');
           else setErrMessage(error.message);
 
@@ -170,12 +170,12 @@ export default function ForceChangePassword({ username, session, setForceChangeP
           type='submit'
           className='mt-5 bg-purple-500 p-4 w-full rounded-sm hover:bg-purple-600 transition-colors duration-300'
         >
-          SUBMIT
+          {isLoading ? <Loader /> : 'SUBMIT'}
         </button>
       </form>
       <h1
         className='text-lg font-roboto text-left pt-4 hover:cursor-pointer hover:text-purple-500 transition-colors duration-200'
-        onClick={() => setForceChangePassword(false)}
+        onClick={() => setAuthState('forceChangePassword', false)}
       >
         Back To Login
       </h1>
