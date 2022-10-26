@@ -17,9 +17,11 @@ export type AuthStates = {
 
   accessToken: string | null;
 
-  expiresIn: string | null;
+  expiresIn: number | null;
 
-  isSignedIn: boolean;
+  expiresAt: number | null;
+
+  refreshTokenJobInterval: NodeJS.Timer | void;
 
   setAuthState: (label: keyof Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState'>, value: any) => void;
 
@@ -28,9 +30,7 @@ export type AuthStates = {
   resetAuthState: () => void;
 };
 
-const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState'> = {
-  authLoader: false,
-
+const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState' | 'authLoader'> = {
   username: null,
 
   session: null,
@@ -43,13 +43,17 @@ const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeA
 
   expiresIn: null,
 
-  isSignedIn: false,
+  expiresAt: null,
+
+  refreshTokenJobInterval: undefined,
 
   forceChangePassword: false,
 };
 
 const stateStore = devtools((set) => ({
   ...initState,
+
+  authLoader: true,
 
   setAuthState: (label, value) => set({ [`${label}`]: value }),
 

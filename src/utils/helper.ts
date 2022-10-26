@@ -1,4 +1,5 @@
 import genString from 'randomstring';
+import day from 'dayjs';
 
 export const RegexValidations = {
   NumberOnly: /(^[0-9]+$|^$)/,
@@ -46,4 +47,17 @@ export const createTempPassword = () => {
       capitalization: 'lowercase',
     })
   );
+};
+
+export const publicRoutes = {
+  '/login': '/login',
+};
+
+export const isPublicRoute = (pathname: string) => {
+  if (!publicRoutes[pathname as keyof typeof publicRoutes]) return false;
+  return true;
+};
+
+export const getCurrentTimestamp = () => {
+  return day().unix();
 };

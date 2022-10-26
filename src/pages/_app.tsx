@@ -3,14 +3,23 @@ import { withTRPC } from '@trpc/next';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 import superjson from 'superjson';
+
 import { AppRouter } from '@/server/routers/_app';
+import AuthGuard from '@/components/AuthGuard';
+import { useAuthStore } from '@/store/auth.store';
 
 import '../styles/globals.css';
 
-const MyApp: AppType = ({ Component, pageProps }) => <Component {...pageProps} />;
+const MyApp: AppType = ({ Component, pageProps }) => {
+  return (
+    <AuthGuard>
+      <Component {...pageProps} />
+    </AuthGuard>
+  );
+};
 
 export default withTRPC<AppRouter>({
-  config({ ctx }) {
+  config() {
     const url = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/api/trpc` : 'http://localhost:3000/api/trpc';
 
     const links = [
@@ -22,6 +31,11 @@ export default withTRPC<AppRouter>({
     ];
 
     return {
+      headers() {
+        return {
+          Authorization: 'Bearer ' + useAuthStore.getState().accessToken,
+        };
+      },
       links,
       transformer: superjson,
       queryClientConfig: {
@@ -30,15 +44,6 @@ export default withTRPC<AppRouter>({
             staleTime: 60,
           },
         },
-      },
-      headers() {
-        if (ctx?.req) {
-          return {
-            ...ctx.req.headers,
-            'x-ssr': '1',
-          };
-        }
-        return {};
       },
     };
   },

@@ -8,7 +8,7 @@ import FadeIn from '@/components/FadeIn';
 import { trpc } from '@/utils/trpc';
 import { RegexValidations } from '@/utils/helper';
 import useAuthStoreTrack from '@/store/auth.store';
-import useAuthHook from '@/hooks/auth.hooks';
+import useAuthHook from '@/hooks/useLogin.hook';
 import Loader from '@/components/Loader';
 
 const schema = z.object({

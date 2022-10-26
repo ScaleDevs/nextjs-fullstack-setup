@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { deleteCookie, getCookie } from 'cookies-next';
+
 import { createRouter } from '../createRouter';
 import { AuthService } from '@/svc/auth.service';
-import { deleteCookie, getCookie, setCookie } from 'cookies-next';
-import { constants } from '../constants';
 
 export const authRouter = createRouter()
   .mutation('createUser', {
@@ -17,16 +17,7 @@ export const authRouter = createRouter()
       password: z.string(),
     }),
     async resolve({ ctx, input }) {
-      const result = await AuthService.signIn(input.username, input.password);
-
-      setCookie('refreshToken', result?.AuthenticationResult?.RefreshToken, {
-        req: ctx.req,
-        res: ctx.res as any,
-        maxAge: constants.cognitoRefreshTokenCookieAge,
-        httpOnly: true,
-      });
-
-      return result;
+      return AuthService.signIn(ctx, input.username, input.password);
     },
   })
   .mutation('forceChangePassword', {
@@ -52,5 +43,12 @@ export const authRouter = createRouter()
       await AuthService.signOut(refreshToken.toString());
 
       deleteCookie('refreshToken', { req: ctx.req, res: ctx.res as any });
+      deleteCookie('userId', { req: ctx.req, res: ctx.res as any });
+    },
+  })
+  .mutation('refreshToken', {
+    async resolve({ ctx }) {
+      console.log('refreshing');
+      return AuthService.refreshTokens(ctx);
     },
   });

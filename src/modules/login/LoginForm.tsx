@@ -3,7 +3,7 @@ import { FiEyeOff, FiEye } from 'react-icons/fi';
 
 import FadeIn from '@/components/FadeIn';
 import Loader from '@/components/Loader';
-import useAuthHook from '@/hooks/auth.hooks';
+import useAuthHook from '@/hooks/useLogin.hook';
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,7 +17,7 @@ export default function LoginForm() {
       {!!errMessage && (
         <>
           <FadeIn>
-            <div className='bg-rose-600 rounded-sm p-4 opacity-90 text-center'>{errMessage}</div>
+            <div className='bg-rose-600 rounded-sm p-4 opacity-90 text-center md:w-96 break-words'>{errMessage}</div>
           </FadeIn>
           <br />
         </>

@@ -115,3 +115,20 @@ export const revokeToken = async (refreshToken: string) => {
     trpcErrorHandling(err);
   }
 };
+
+export const refreshTokens = async (username: string, refreshToken: string) => {
+  try {
+    const command = new InitiateAuthCommand({
+      ClientId: constants.appClientId,
+      AuthFlow: AuthFlowType.REFRESH_TOKEN_AUTH,
+      AuthParameters: {
+        REFRESH_TOKEN: refreshToken,
+        SECRET_HASH: createSecretHash(username),
+      },
+    });
+
+    return await client.send(command);
+  } catch (err: any) {
+    trpcErrorHandling(err);
+  }
+};

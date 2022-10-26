@@ -26,11 +26,11 @@ export default function useAuthHook() {
     },
   });
 
-  const updateAuthStates = (data: InitiateAuthCommandOutput) => {
+  const updateAuthStates = (data: InitiateAuthCommandOutput & { expiresAt: number }) => {
     setAuthState('accessToken', data?.AuthenticationResult?.AccessToken);
     setAuthState('idToken', data?.AuthenticationResult?.IdToken);
     setAuthState('expiresIn', data?.AuthenticationResult?.ExpiresIn);
-    setAuthState('expiresIn', data?.AuthenticationResult?.ExpiresIn);
+    setAuthState('expiresAt', data.expiresAt);
     router.push('/');
   };
 

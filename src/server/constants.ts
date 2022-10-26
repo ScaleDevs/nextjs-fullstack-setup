@@ -5,7 +5,7 @@ export const constants = {
   SecretAccessKey: process.env.AWS_CONFIG_CLIENT_SECRET_KEY,
   appClientId: process.env.AWS_CONFIG_CLIENT_APP_CLIENT_ID,
   appClientSecret: process.env.AWS_CONFIG_CLIENT_APP_SECRET,
-  cognitoRefreshTokenCookieAge: parseInt(process.env.COGNITO_REFRESH_TOKEN_COOKIE_AGE, 10),
+  cognitoRefreshTokenCookieAge: parseInt(process.env.COGNITO_REFRESH_TOKEN_COOKIE_AGE as string, 10),
 
   general: {
     appName: process.env.GENERAL_APP_NAME,
