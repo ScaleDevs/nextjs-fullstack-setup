@@ -12,7 +12,6 @@ import { TRPCError } from '@trpc/server';
 import { sendUserInvite } from '@/repo/mailersend.repo';
 import { createTempPassword } from '@/utils/helper';
 import { decodeToken } from '../util';
-import { constants } from '../constants';
 
 class Service {
   public async createUser(email: string) {
@@ -25,27 +24,27 @@ class Service {
   public async signIn(ctx: any, username: string, password: string) {
     const result = await initiateAuth(username, password);
 
-    if (!result || !result.AuthenticationResult)
+    if (!result || !result.authResult.AuthenticationResult)
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Something went wrong' });
 
-    const user = await decodeToken(result.AuthenticationResult.AccessToken as string);
+    const user = await decodeToken(result.authResult.AuthenticationResult.AccessToken as string);
 
     setCookie('userId', user.sub, {
       req: ctx.req,
       res: ctx.res as any,
-      maxAge: constants.cognitoRefreshTokenCookieAge,
+      maxAge: result.cookieAge,
       httpOnly: true,
     });
 
-    setCookie('refreshToken', result?.AuthenticationResult?.RefreshToken, {
+    setCookie('refreshToken', result.authResult?.AuthenticationResult?.RefreshToken, {
       req: ctx.req,
       res: ctx.res as any,
-      maxAge: constants.cognitoRefreshTokenCookieAge,
+      maxAge: result.cookieAge,
       httpOnly: true,
     });
 
     return {
-      ...result,
+      ...result.authResult,
       expiresAt: user.exp,
     };
   }
