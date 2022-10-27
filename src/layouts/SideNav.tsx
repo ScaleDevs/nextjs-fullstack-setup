@@ -17,7 +17,7 @@ const NavLinkHouse = ({ title }: INavLinkHouseProps) => {
   const [collapse, setCollapse] = useState(false);
 
   const LinkItem = ({ children }: any) => (
-    <div className='ml-4 text-sm p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>{children}</div>
+    <div className='ml-4 text-md p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>{children}</div>
   );
 
   return (
@@ -59,11 +59,11 @@ const NavLink = ({ children, path, logout }: INavLinkProps) => {
 
   return (
     <li>
-      <Link href={path} className='w-full'>
-        <FadeIn cssText='p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>
-          <a>{children}</a>
-        </FadeIn>
-      </Link>
+      <FadeIn cssText='p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>
+        <Link href={path} className='w-full'>
+          {children}
+        </Link>
+      </FadeIn>
     </li>
   );
 };
@@ -96,12 +96,12 @@ export default function SideNav() {
         )}
 
         <div className={sideNavOpen ? 'divide-y text-gray-200' : ''}>
-          <div className={sideNavOpen ? 'text-blue-500 p-5 font-raleway font-bold text-3xl' : 'hidden'}>
+          <div className={sideNavOpen ? 'text-blue-500 p-5 font-comfortaa font-bold text-3xl' : 'hidden'}>
             Scale<span className='text-gray-300'>Devs</span>
           </div>
 
           <div className={sideNavOpen ? 'w-full py-3' : 'hidden'}>
-            <ul className='w-[90%] mx-auto font-roboto font-bold'>
+            <ul className='w-[90%] mx-auto font-comfortaa font- text-lg'>
               <NavLink path='/'>Dashboard</NavLink>
               <NavLink path='/user-management'>Users</NavLink>
               <NavLinkHouse title='Product' />

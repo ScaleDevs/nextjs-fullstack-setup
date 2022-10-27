@@ -12,6 +12,7 @@ module.exports = {
       roboto: ['Roboto Condensed', 'sans-serif'],
       pacifico: ['Pacifico', 'cursive'],
       raleway: ['Raleway', 'sans-serif'],
+      comfortaa: ['Comfortaa', 'cursive'],
     },
     extend: {
       animationDuration: {
