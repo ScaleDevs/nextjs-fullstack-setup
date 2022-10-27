@@ -2,7 +2,6 @@ import { useState } from 'react';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 import FadeIn from '@/components/FadeIn';
 import { trpc } from '@/utils/trpc';
@@ -10,6 +9,8 @@ import { RegexValidations } from '@/utils/helper';
 import useAuthStoreTrack from '@/store/auth.store';
 import useLogin from '@/hooks/useLogin.hook';
 import Loader from '@/components/Loader';
+import EyeCloseIcon from '@/components/EyeCloseIcon';
+import EyeOpenIcon from '@/components/EyeOpenIcon';
 
 const schema = z.object({
   newPassword: z.string(),
@@ -142,17 +143,19 @@ export default function ForceChangePassword() {
             onChange={onPasswordValidation}
           />
           {showPassword ? (
-            <FiEyeOff
-              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer'
-              size={30}
+            <div
+              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer h-auto flex flex-row items-center'
               onClick={toggleShowPass}
-            />
+            >
+              <EyeCloseIcon />
+            </div>
           ) : (
-            <FiEye
-              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer'
-              size={30}
+            <div
+              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer h-auto flex flex-row items-center'
               onClick={toggleShowPass}
-            />
+            >
+              <EyeOpenIcon />
+            </div>
           )}
         </div>
         <div>

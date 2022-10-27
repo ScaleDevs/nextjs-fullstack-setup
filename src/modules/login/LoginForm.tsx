@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { FiEyeOff, FiEye } from 'react-icons/fi';
 
 import FadeIn from '@/components/FadeIn';
 import Loader from '@/components/Loader';
 import useLogin from '@/hooks/useLogin.hook';
+import EyeCloseIcon from '@/components/EyeCloseIcon';
+import EyeOpenIcon from '@/components/EyeOpenIcon';
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,17 +33,19 @@ export default function LoginForm() {
             {...register('password')}
           />
           {showPassword ? (
-            <FiEyeOff
-              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer'
-              size={30}
+            <div
+              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer h-auto flex flex-row items-center'
               onClick={toggleShowPass}
-            />
+            >
+              <EyeCloseIcon />
+            </div>
           ) : (
-            <FiEye
-              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer'
-              size={30}
+            <div
+              className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer h-auto flex flex-row items-center'
               onClick={toggleShowPass}
-            />
+            >
+              <EyeOpenIcon />
+            </div>
           )}
         </div>
         <button
