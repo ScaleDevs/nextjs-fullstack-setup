@@ -7,18 +7,35 @@ import ChevronUpIcon from '@/components/ChevronUpIcon';
 import HamburgerIcon from '@/components/HamburgerIcon';
 import ArrowCircleRightIcon from '@/components/ArrowCircleRightIcon';
 import ArrowCircleLeftIcon from '@/components/ArrowCircleLeftIcon';
+import BoxIcon from '@/components/BoxIcon';
 import FadeIn from '@/components/FadeIn';
+import BarChartIcon from '@/components/BarChartIcon';
+import LogoutIcon from '@/components/LogoutIcon';
+import UsersIcon from '@/components/UsersIcon';
 
 interface INavLinkHouseProps {
   title: string;
+  Icon?: () => JSX.Element;
 }
 
-const NavLinkHouse = ({ title }: INavLinkHouseProps) => {
+const NavLinkHouse = ({ title, Icon }: INavLinkHouseProps) => {
   const [collapse, setCollapse] = useState(false);
 
   const LinkItem = ({ children }: any) => (
     <div className='ml-4 text-md p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>{children}</div>
   );
+
+  const IconComp = () => {
+    if (Icon)
+      return (
+        <>
+          <Icon />
+          <div className='px-1' />
+        </>
+      );
+
+    return null;
+  };
 
   return (
     <li>
@@ -27,7 +44,10 @@ const NavLinkHouse = ({ title }: INavLinkHouseProps) => {
           className='flex flex-row justify-between p-3 w-full rounded-md hover:bg-gray-100 hover:cursor-pointer'
           onClick={() => setCollapse((curr) => !curr)}
         >
-          {title}
+          <div className='flex flex-row items-center'>
+            <IconComp />
+            {title}
+          </div>
           {collapse ? <ChevronUpIcon /> : <ChevronDownIcon />}
         </div>
       </FadeIn>
@@ -45,23 +65,42 @@ interface INavLinkProps {
   path: string;
   logout?: boolean;
   houseItems?: boolean;
+  Icon?: () => JSX.Element;
 }
 
-const NavLink = ({ children, path, logout }: INavLinkProps) => {
+const NavLink = ({ children, path, logout, Icon }: INavLinkProps) => {
   const { signOutWithMutate } = useLogout();
+
+  const IconComp = () => {
+    if (Icon)
+      return (
+        <>
+          <Icon />
+          <div className='px-1' />
+        </>
+      );
+
+    return null;
+  };
 
   if (logout)
     return (
       <li onClick={() => signOutWithMutate()}>
-        <FadeIn cssText='p-3 w-full rounded-md hover:bg-gray-100 hover:cursor-pointer'>{children}</FadeIn>
+        <FadeIn cssText='p-3 w-full rounded-md hover:bg-gray-100 hover:cursor-pointer flex flex-row items-center'>
+          <IconComp />
+          {children}
+        </FadeIn>
       </li>
     );
 
   return (
     <li>
-      <FadeIn cssText='p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>
-        <Link href={path} className='w-full'>
-          {children}
+      <FadeIn cssText='rounded-md hover:bg-gray-100 hover:cursor-pointer'>
+        <Link href={path} passHref>
+          <a className='p-3 flex flex-row items-center'>
+            <IconComp />
+            {children}
+          </a>
         </Link>
       </FadeIn>
     </li>
@@ -102,10 +141,14 @@ export default function SideNav() {
 
           <div className={sideNavOpen ? 'w-full py-3' : 'hidden'}>
             <ul className='w-[90%] mx-auto font-comfortaa font- text-lg'>
-              <NavLink path='/'>Dashboard</NavLink>
-              <NavLink path='/user-management'>Users</NavLink>
-              <NavLinkHouse title='Product' />
-              <NavLink path='/login' logout>
+              <NavLink path='/' Icon={BarChartIcon}>
+                Dashboard
+              </NavLink>
+              <NavLink path='/user-management' Icon={UsersIcon}>
+                Users
+              </NavLink>
+              <NavLinkHouse title='Product' Icon={BoxIcon} />
+              <NavLink path='/login' logout Icon={LogoutIcon}>
                 Logout
               </NavLink>
             </ul>
