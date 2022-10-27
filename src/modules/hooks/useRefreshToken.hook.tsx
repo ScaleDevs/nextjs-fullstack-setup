@@ -4,10 +4,12 @@ import useAuthStoreTrack from '@/store/auth.store';
 import { InitiateAuthCommandOutput } from '@aws-sdk/client-cognito-identity-provider';
 import { trpc } from '@/utils/trpc';
 import { publicRoutes } from '@/utils/helper';
+import { useSyncTabs } from './useSyncTabs';
 
 export default function useRefreshToken() {
   const router = useRouter();
   const { setAuthState, resetAuthState, authLoader } = useAuthStoreTrack();
+  const { logoutAllTabs } = useSyncTabs();
   const [errMessage, setErrMessage] = useState<string | null>(null);
   const { mutate, isSuccess, isError, data } = trpc.useMutation('auth.refreshToken', {
     onSuccess(data) {
@@ -23,7 +25,7 @@ export default function useRefreshToken() {
 
       resetAuthState();
       setAuthState('authLoader', false);
-
+      logoutAllTabs();
       router.push(publicRoutes['/login']);
     },
   });

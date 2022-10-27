@@ -2,21 +2,23 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import useAuthStoreTrack from '@/store/auth.store';
 import { ChallengeNameType, InitiateAuthCommandOutput } from '@aws-sdk/client-cognito-identity-provider';
-import { trpc } from '@/utils/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
+import useAuthStoreTrack from '@/store/auth.store';
+import { trpc } from '@/utils/trpc';
+import { useSyncTabs } from './useSyncTabs';
 
 const schema = z.object({
   username: z.string(),
   password: z.string(),
 });
 
-export default function useAuthHook() {
+export default function useLogin() {
   const router = useRouter();
   const { setAuthState } = useAuthStoreTrack();
   const [errMessage, setErrMessage] = useState<string | null>(null);
   const { mutate, isLoading: isSignInLoading } = trpc.useMutation('auth.signIn');
+  const { loginAllTabs } = useSyncTabs();
 
   const { register, handleSubmit } = useForm({
     resolver: zodResolver(schema),
@@ -32,6 +34,7 @@ export default function useAuthHook() {
     setAuthState('expiresIn', data?.AuthenticationResult?.ExpiresIn);
     setAuthState('expiresAt', data.expiresAt);
     router.push('/');
+    loginAllTabs();
   };
 
   const signIn = (formData: typeof schema._input) => {

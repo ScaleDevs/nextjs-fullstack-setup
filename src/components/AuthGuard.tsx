@@ -4,7 +4,8 @@ import { useRouter } from 'next/router';
 import { getCurrentTimestamp, isPublicRoute, publicRoutes } from '@/utils/helper';
 import useRefreshToken from '@/hooks/useRefreshToken.hook';
 import { useLogout } from '@/hooks/useLogout.hook';
-import { useRefreshTokenJob } from '@/modules/hooks/useRefreshTokenJob';
+import { useRefreshTokenJob } from '@/hooks/useRefreshTokenJob';
+import { useSyncTabs } from '@/hooks/useSyncTabs';
 import useAuthStoreTrack from '@/store/auth.store';
 import Loader from '@/components/Loader';
 
@@ -26,11 +27,14 @@ const AuthGuardMainComponent = ({ children }: AuthGuardMainComponentProps) => {
   const { refreshAccessToken } = useRefreshToken();
   const { runRefreshTokenJob, clearRefreshTokenJob } = useRefreshTokenJob();
   const { signOut } = useLogout();
+  const { initiateAuthChannel } = useSyncTabs();
 
   const refreshTokenJobRef = useRef(0);
   const checkAuth = () => {
     if (!authLoader) {
       console.log('HERE', process.env.NODE_ENV);
+      initiateAuthChannel();
+
       // not logged in
       if (!expiresAt || !accessToken) {
         if (refreshTokenJobInterval) {

@@ -15,8 +15,8 @@ This is a Next.js fullstack setup template (Helpful for small apps)
 
 - DATABASE_URL = pirsma connection to database (mongodb, planetscale, mysql)
 - AWS_CONFIG_CLIENT_REGION={aws region}
-- AWS_CONFIG_CLIENT_ACCESS_KEY_ID={aws user account accesssKeyId (create a specific user for this and make sure to apply least privilege)}
-- AWS_CONFIG_CLIENT_SECRET_KEY={aws user account secret key (create a specific user for this and make sure to apply least privilege)}
+- AWS_CONFIG_ACCESS_KEY_ID={aws user account accesssKeyId (create a specific user for this and make sure to apply least privilege)}
+- AWS_CONFIG_SECRET_KEY={aws user account secret key (create a specific user for this and make sure to apply least privilege)}
 - AWS_CONFIG_CLIENT_APP_CLIENT_ID={cognito user pool app client id}
 - AWS_CONFIG_CLIENT_APP_SECRET={cognito user pool app client secret}
 - COGNITO_USER_POOL_ID={aws cognito user pool id}
@@ -28,13 +28,3 @@ This is a Next.js fullstack setup template (Helpful for small apps)
 - MAILER_SEND_FROM_EMAIL={mailer send from email}
 - MAILER_SEND_FROM_NAME={mailer send from name}
 - MAILER_SEND_API_KEY={api key of your mailer send account domain}
-
-## references
-
-- implement login redirect
-  - saving tokens
-
-- protect api routes
-- protect page routes
-- implement logout
-- remove auth0

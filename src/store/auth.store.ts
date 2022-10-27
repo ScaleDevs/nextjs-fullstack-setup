@@ -23,6 +23,8 @@ export type AuthStates = {
 
   refreshTokenJobInterval: NodeJS.Timer | void;
 
+  getAuthStates: () => Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState' | 'refreshTokenJobInterval'>;
+
   setAuthState: (label: keyof Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState'>, value: any) => void;
 
   setWholeAuthState: (authStates: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState'>) => void;
@@ -30,7 +32,7 @@ export type AuthStates = {
   resetAuthState: () => void;
 };
 
-const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState' | 'authLoader'> = {
+const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState' | 'authLoader' | 'getAuthStates'> = {
   username: null,
 
   session: null,
@@ -50,10 +52,17 @@ const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeA
   forceChangePassword: false,
 };
 
-const stateStore = devtools((set) => ({
+const stateStore = devtools((set, get) => ({
   ...initState,
 
   authLoader: true,
+
+  getAuthStates: () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { setAuthState, setWholeAuthState, resetAuthState, refreshTokenJobInterval, ...newAuthStates } = get();
+
+    return newAuthStates;
+  },
 
   setAuthState: (label, value) => set({ [`${label}`]: value }),
 

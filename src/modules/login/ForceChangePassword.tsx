@@ -8,7 +8,7 @@ import FadeIn from '@/components/FadeIn';
 import { trpc } from '@/utils/trpc';
 import { RegexValidations } from '@/utils/helper';
 import useAuthStoreTrack from '@/store/auth.store';
-import useAuthHook from '@/hooks/useLogin.hook';
+import useLogin from '@/hooks/useLogin.hook';
 import Loader from '@/components/Loader';
 
 const schema = z.object({
@@ -18,7 +18,7 @@ const schema = z.object({
 export default function ForceChangePassword() {
   const { mutate, isLoading } = trpc.useMutation('auth.forceChangePassword');
   const { setAuthState, session, username } = useAuthStoreTrack();
-  const { updateAuthStates } = useAuthHook();
+  const { updateAuthStates } = useLogin();
 
   const [errMessage, setErrMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);

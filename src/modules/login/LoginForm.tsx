@@ -3,11 +3,11 @@ import { FiEyeOff, FiEye } from 'react-icons/fi';
 
 import FadeIn from '@/components/FadeIn';
 import Loader from '@/components/Loader';
-import useAuthHook from '@/hooks/useLogin.hook';
+import useLogin from '@/hooks/useLogin.hook';
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const { errMessage, handleSubmit, signIn, register, isSignInLoading } = useAuthHook();
+  const { errMessage, handleSubmit, signIn, register, isSignInLoading } = useLogin();
 
   const toggleShowPass = () => setShowPassword((val) => !val);
 
