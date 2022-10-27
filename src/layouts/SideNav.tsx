@@ -11,10 +11,9 @@ import FadeIn from '@/components/FadeIn';
 
 interface INavLinkHouseProps {
   title: string;
-  open: boolean;
 }
 
-const NavLinkHouse = ({ title, open }: INavLinkHouseProps) => {
+const NavLinkHouse = ({ title }: INavLinkHouseProps) => {
   const [collapse, setCollapse] = useState(false);
 
   const LinkItem = ({ children }: any) => (
@@ -22,7 +21,7 @@ const NavLinkHouse = ({ title, open }: INavLinkHouseProps) => {
   );
 
   return (
-    <li className={`${open ? '' : 'hidden'}`}>
+    <li>
       <FadeIn>
         <div
           className='flex flex-row justify-between p-3 w-full rounded-md hover:bg-gray-100 hover:cursor-pointer'
@@ -42,25 +41,24 @@ const NavLinkHouse = ({ title, open }: INavLinkHouseProps) => {
 };
 
 interface INavLinkProps {
-  open: boolean;
   children: any;
   path: string;
   logout?: boolean;
   houseItems?: boolean;
 }
 
-const NavLink = ({ open, children, path, logout }: INavLinkProps) => {
+const NavLink = ({ children, path, logout }: INavLinkProps) => {
   const { signOutWithMutate } = useLogout();
 
   if (logout)
     return (
-      <li className={`${open ? '' : 'hidden'}`} onClick={() => signOutWithMutate()}>
+      <li onClick={() => signOutWithMutate()}>
         <FadeIn cssText='p-3 w-full rounded-md hover:bg-gray-100 hover:cursor-pointer'>{children}</FadeIn>
       </li>
     );
 
   return (
-    <li className={`${open ? '' : 'hidden'}`}>
+    <li>
       <Link href={path} className='w-full'>
         <FadeIn cssText='p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>
           <a>{children}</a>
@@ -85,34 +83,40 @@ export default function SideNav() {
           sideNavOpen ? 'w-[70%] sm:w-64' : 'w-0 sm:w-12'
         } absolute w-[70%] sm:w-64 shadow-lg h-full bg-zinc-900 transition-[width] duration-500 sm:relative overflow-hidden`}
       >
-        <div
-          className={`w-full ${sideNavOpen ? 'flex flex-row' : 'hidden sm:flex sm:flex-row'} sm:flex sm:flex-row justify-end p-3`}
-        >
-          <FadeIn cssText={`w-full flex flex-row justify-center p-3 ${sideNavOpen ? 'hidden' : ''}`}>
+        {sideNavOpen ? (
+          ''
+        ) : (
+          <div className={`w-full ${sideNavOpen ? 'flex flex-row' : 'hidden'} sm:flex sm:flex-row justify-end p-3`}>
+            <FadeIn cssText={`w-full flex flex-row justify-center p-3 ${sideNavOpen ? 'hidden' : ''}`}>
+              <button onClick={toggleSideNav}>
+                <ArrowCircleRightIcon isButton />
+              </button>
+            </FadeIn>
+          </div>
+        )}
+
+        <div className={sideNavOpen ? 'divide-y text-gray-200' : ''}>
+          <div className={sideNavOpen ? 'text-blue-500 p-5 font-raleway font-bold text-3xl' : 'hidden'}>
+            Scale<span className='text-gray-300'>Devs</span>
+          </div>
+
+          <div className={sideNavOpen ? 'w-full py-3' : 'hidden'}>
+            <ul className='w-[90%] mx-auto font-roboto font-bold'>
+              <NavLink path='/'>Dashboard</NavLink>
+              <NavLink path='/user-management'>Users</NavLink>
+              <NavLinkHouse title='Product' />
+              <NavLink path='/login' logout>
+                Logout
+              </NavLink>
+            </ul>
+          </div>
+
+          <FadeIn cssText={`w-full flex flex-row justify-center px-3 pt-10 ${sideNavOpen ? '' : 'hidden'}`}>
             <button onClick={toggleSideNav}>
-              <ArrowCircleRightIcon />
+              <ArrowCircleLeftIcon isButton />
             </button>
           </FadeIn>
         </div>
-
-        <ul className='w-[90%] mt-5 mx-auto font-roboto font-bold'>
-          <NavLink open={sideNavOpen} path='/'>
-            Dashboard
-          </NavLink>
-          <NavLink open={sideNavOpen} path='/user-management'>
-            Users
-          </NavLink>
-          <NavLinkHouse open={sideNavOpen} title='Product' />
-          <NavLink open={sideNavOpen} path='/login' logout>
-            Logout
-          </NavLink>
-        </ul>
-
-        <FadeIn cssText={`w-full flex flex-row justify-center p-3 ${sideNavOpen ? '' : 'hidden'}`}>
-          <button onClick={toggleSideNav}>
-            <ArrowCircleLeftIcon />
-          </button>
-        </FadeIn>
       </div>
     </>
   );
