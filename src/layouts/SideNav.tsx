@@ -2,16 +2,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import useAppStoreTrack from '@/store/app.store';
 import { useLogout } from '@/modules/hooks/useLogout.hook';
-import ChevronDownIcon from '@/components/ChevronDownIcon';
-import ChevronUpIcon from '@/components/ChevronUpIcon';
-import HamburgerIcon from '@/components/HamburgerIcon';
-import ArrowCircleRightIcon from '@/components/ArrowCircleRightIcon';
-import ArrowCircleLeftIcon from '@/components/ArrowCircleLeftIcon';
-import BoxIcon from '@/components/BoxIcon';
 import FadeIn from '@/components/FadeIn';
-import BarChartIcon from '@/components/BarChartIcon';
-import LogoutIcon from '@/components/LogoutIcon';
-import UsersIcon from '@/components/UsersIcon';
+import IconComp from '@/components/Icon';
 
 interface NavLinkHouseItem {
   path: string;
@@ -33,7 +25,7 @@ const NavLinkHouse = ({ title, Icon, links }: INavLinkHouseProps) => {
     </Link>
   );
 
-  const IconComp = () => {
+  const IconTitle = () => {
     if (Icon)
       return (
         <>
@@ -53,10 +45,14 @@ const NavLinkHouse = ({ title, Icon, links }: INavLinkHouseProps) => {
           onClick={() => setCollapse((curr) => !curr)}
         >
           <div className='flex flex-row items-center'>
-            <IconComp />
+            <IconTitle />
             {title}
           </div>
-          {collapse ? <ChevronUpIcon /> : <ChevronDownIcon />}
+          {collapse ? (
+            <IconComp iconName='ChevronUpIcon' iconProps={{}} />
+          ) : (
+            <IconComp iconName='ChevronDownIcon' iconProps={{}} />
+          )}
         </div>
       </FadeIn>
 
@@ -130,7 +126,7 @@ export default function SideNav() {
   return (
     <>
       <button onClick={toggleSideNav} className='absolute p-3 sm:hidden'>
-        <HamburgerIcon />
+        <IconComp iconName='HamburgerIcon' iconProps={{ isButton: true }} />
       </button>
       <div
         className={`${
@@ -143,7 +139,7 @@ export default function SideNav() {
           <div className={`w-full ${sideNavOpen ? 'flex flex-row' : 'hidden'} sm:flex sm:flex-row justify-end p-3`}>
             <FadeIn cssText={`w-full flex flex-row justify-center p-3 ${sideNavOpen ? 'hidden' : ''}`}>
               <button onClick={toggleSideNav}>
-                <ArrowCircleRightIcon isButton />
+                <IconComp iconName='ArrowCircleRightIcon' iconProps={{ isButton: true }} />
               </button>
             </FadeIn>
           </div>
@@ -156,21 +152,21 @@ export default function SideNav() {
 
           <div className={sideNavOpen ? 'w-full py-3' : 'hidden'}>
             <ul className='w-[90%] mx-auto font-comfortaa font- text-lg'>
-              <NavLink path='/' Icon={BarChartIcon}>
+              <NavLink path='/' Icon={() => <IconComp iconName='BarChartIcon' iconProps={{}} />}>
                 Dashboard
               </NavLink>
-              <NavLink path='/user-management' Icon={UsersIcon}>
+              <NavLink path='/user-management' Icon={() => <IconComp iconName='UsersIcon' iconProps={{}} />}>
                 Users
               </NavLink>
               <NavLinkHouse
                 title='Product'
-                Icon={BoxIcon}
+                Icon={() => <IconComp iconName='BoxIcon' iconProps={{}} />}
                 links={[
                   { title: 'Create Product', path: '/product/create' },
                   { title: 'List Product', path: '/product/list' },
                 ]}
               />
-              <NavLink path='/login' logout Icon={LogoutIcon}>
+              <NavLink path='/login' logout Icon={() => <IconComp iconName='LogoutIcon' iconProps={{}} />}>
                 Logout
               </NavLink>
             </ul>
@@ -178,7 +174,7 @@ export default function SideNav() {
 
           <FadeIn cssText={`w-full flex flex-row justify-center px-3 pt-10 ${sideNavOpen ? '' : 'hidden'}`}>
             <button onClick={toggleSideNav}>
-              <ArrowCircleLeftIcon isButton />
+              <IconComp iconName='ArrowCircleLeftIcon' iconProps={{ isButton: true }} />
             </button>
           </FadeIn>
         </div>

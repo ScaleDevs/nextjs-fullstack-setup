@@ -9,8 +9,7 @@ import { RegexValidations } from '@/utils/helper';
 import useAuthStoreTrack from '@/store/auth.store';
 import useLogin from '@/hooks/useLogin.hook';
 import Loader from '@/components/Loader';
-import EyeCloseIcon from '@/components/EyeCloseIcon';
-import EyeOpenIcon from '@/components/EyeOpenIcon';
+import IconComp from '@/components/Icon';
 
 const schema = z.object({
   newPassword: z.string(),
@@ -147,14 +146,14 @@ export default function ForceChangePassword() {
               className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer h-auto flex flex-row items-center'
               onClick={toggleShowPass}
             >
-              <EyeCloseIcon />
+              <IconComp iconName='EyeCloseIcon' iconProps={{}} />
             </div>
           ) : (
             <div
               className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer h-auto flex flex-row items-center'
               onClick={toggleShowPass}
             >
-              <EyeOpenIcon />
+              <IconComp iconName='EyeOpenIcon' iconProps={{}} />
             </div>
           )}
         </div>

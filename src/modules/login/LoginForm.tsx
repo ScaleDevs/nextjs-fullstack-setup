@@ -3,8 +3,7 @@ import { useState } from 'react';
 import FadeIn from '@/components/FadeIn';
 import Loader from '@/components/Loader';
 import useLogin from '@/hooks/useLogin.hook';
-import EyeCloseIcon from '@/components/EyeCloseIcon';
-import EyeOpenIcon from '@/components/EyeOpenIcon';
+import IconComp from '@/components/Icon';
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -37,14 +36,14 @@ export default function LoginForm() {
               className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer h-auto flex flex-row items-center'
               onClick={toggleShowPass}
             >
-              <EyeCloseIcon />
+              <IconComp iconName='EyeCloseIcon' iconProps={{}} />
             </div>
           ) : (
             <div
               className='absolute right-0 top-0 bottom-0 mt-auto mb-auto pr-1 mr-1 hover:cursor-pointer h-auto flex flex-row items-center'
               onClick={toggleShowPass}
             >
-              <EyeOpenIcon />
+              <IconComp iconName='EyeOpenIcon' iconProps={{}} />
             </div>
           )}
         </div>
