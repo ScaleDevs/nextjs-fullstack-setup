@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run prisma-generate && next build",
     "start": "next start",
+    "prisma-generate": "npx prisma generate",
     "lint": "next lint",
     "prettier": "prettier \"**/*.{js,jsx,ts,tsx}\" --check",
     "prettier:fix": "npm run prettier -- --write",
