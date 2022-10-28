@@ -1,4 +1,4 @@
-This is a Next.js fullstack setup template (Helpful for small apps)
+This is a Dashboard template built with Next.js fullstack setup (Helpful for small to medium size apps)
 
 ## Stacks
 
