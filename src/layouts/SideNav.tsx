@@ -22,7 +22,7 @@ const NavLinkHouse = ({ title, Icon }: INavLinkHouseProps) => {
   const [collapse, setCollapse] = useState(false);
 
   const LinkItem = ({ children }: any) => (
-    <div className='ml-4 text-md p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>{children}</div>
+    <div className='text-md p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>{children}</div>
   );
 
   const IconComp = () => {
@@ -52,7 +52,11 @@ const NavLinkHouse = ({ title, Icon }: INavLinkHouseProps) => {
         </div>
       </FadeIn>
 
-      <div className={`transition-[max-height] duration-500 ${collapse ? 'max-h-56 ease-in' : 'max-h-0'} overflow-hidden`}>
+      <div
+        className={`ml-4 border-l-2 transition-[max-height] duration-500 ${
+          collapse ? 'max-h-56 ease-in' : 'max-h-0'
+        } overflow-hidden`}
+      >
         <LinkItem>Link1</LinkItem>
         <LinkItem>Link2</LinkItem>
       </div>
