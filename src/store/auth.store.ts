@@ -4,11 +4,26 @@ import { devtools } from 'zustand/middleware';
 
 export type AuthStates = {
   authLoader: boolean;
+
   userId: string | null;
+
+  username: string | null;
+
+  session: string | null;
+
+  forceChangePassword: boolean;
+
+  idToken: string | null;
 
   accessToken: string | null;
 
-  isSignedIn: boolean;
+  expiresIn: number | null;
+
+  expiresAt: number | null;
+
+  refreshTokenJobInterval: NodeJS.Timer | void;
+
+  getAuthStates: () => Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState' | 'refreshTokenJobInterval'>;
 
   setAuthState: (label: keyof Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState'>, value: any) => void;
 
@@ -17,18 +32,37 @@ export type AuthStates = {
   resetAuthState: () => void;
 };
 
-const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState'> = {
-  authLoader: false,
+const initState: Omit<AuthStates, 'setAuthState' | 'resetAuthState' | 'setWholeAuthState' | 'authLoader' | 'getAuthStates'> = {
+  username: null,
+
+  session: null,
 
   userId: null,
 
+  idToken: null,
+
   accessToken: null,
 
-  isSignedIn: false,
+  expiresIn: null,
+
+  expiresAt: null,
+
+  refreshTokenJobInterval: undefined,
+
+  forceChangePassword: false,
 };
 
-const stateStore = devtools((set) => ({
+const stateStore = devtools((set, get) => ({
   ...initState,
+
+  authLoader: true,
+
+  getAuthStates: () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { setAuthState, setWholeAuthState, resetAuthState, refreshTokenJobInterval, ...newAuthStates } = get();
+
+    return newAuthStates;
+  },
 
   setAuthState: (label, value) => set({ [`${label}`]: value }),
 

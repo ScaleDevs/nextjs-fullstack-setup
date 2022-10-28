@@ -1,9 +1,11 @@
-import * as React from 'react';
 import Head from 'next/head';
-
-export interface ILoginProps {}
+import LoginForm from '@/modules/login/LoginForm';
+import ForceChangePassword from '@/modules/login/ForceChangePassword';
+import useAuthStoreTrack from '@/store/auth.store';
 
 export default function Login() {
+  const { forceChangePassword } = useAuthStoreTrack();
+
   return (
     <div>
       <Head>
@@ -13,21 +15,7 @@ export default function Login() {
       </Head>
 
       <div className='w-full h-screen bg-zinc-800 flex flex-row justify-center items-center font-roboto'>
-        <div className='bg-zinc-900 p-7 rounded-md text-center'>
-          <h1 className='text-3xl mt-'>LOGIN</h1>
-
-          <h2 className='mt-3 text-gray-500 text-lg'>Please enter you username and password</h2>
-
-          <div className='mt-3 flex flex-col space-y-4'>
-            <input type='text' placeholder='username' className='rounded-sm p-4' />
-            <input type='password' placeholder='password' className='rounded-sm p-4' />
-          </div>
-
-          <button className='mt-5 bg-purple-500 p-4 w-full rounded-sm hover:bg-purple-600 transition-colors duration-300'>
-            LOGIN
-          </button>
-          <h2 className='mt-5 text-gray-500 text-lg hover:cursor-pointer hover:text-gray-400'>forget password?</h2>
-        </div>
+        {forceChangePassword ? <ForceChangePassword /> : <LoginForm />}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Layout from '@/layouts/index';
 
-export default function Home() {
+function Home() {
   return (
     <Layout>
       <Head>
@@ -25,3 +25,5 @@ export default function Home() {
     </Layout>
   );
 }
+
+export default Home;
