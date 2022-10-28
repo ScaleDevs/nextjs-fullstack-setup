@@ -8,7 +8,7 @@ export default function Layout({ children }: any) {
       <SideNav />
       <div className='flex flex-col h-full w-full overflow-y-auto scrollbar'>
         <Header />
-        <div className='container mx-auto'>{children}</div>
+        <div className='w-[90%] mx-auto'>{children}</div>
         <br />
       </div>
     </div>

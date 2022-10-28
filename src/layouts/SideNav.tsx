@@ -13,16 +13,24 @@ import BarChartIcon from '@/components/BarChartIcon';
 import LogoutIcon from '@/components/LogoutIcon';
 import UsersIcon from '@/components/UsersIcon';
 
+interface NavLinkHouseItem {
+  path: string;
+  title: string;
+}
+
 interface INavLinkHouseProps {
   title: string;
   Icon?: () => JSX.Element;
+  links: NavLinkHouseItem[];
 }
 
-const NavLinkHouse = ({ title, Icon }: INavLinkHouseProps) => {
+const NavLinkHouse = ({ title, Icon, links }: INavLinkHouseProps) => {
   const [collapse, setCollapse] = useState(false);
 
-  const LinkItem = ({ children }: any) => (
-    <div className='text-md p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>{children}</div>
+  const LinkItem = ({ children, path }: { children: any; path: string }) => (
+    <Link href={path} passHref>
+      <div className='text-md p-3 rounded-md hover:bg-gray-100 hover:cursor-pointer'>{children}</div>
+    </Link>
   );
 
   const IconComp = () => {
@@ -57,8 +65,11 @@ const NavLinkHouse = ({ title, Icon }: INavLinkHouseProps) => {
           collapse ? 'max-h-56 ease-in' : 'max-h-0'
         } overflow-hidden`}
       >
-        <LinkItem>Link1</LinkItem>
-        <LinkItem>Link2</LinkItem>
+        {links.map(({ title, path }, index) => (
+          <LinkItem key={index} path={path}>
+            {title}
+          </LinkItem>
+        ))}
       </div>
     </li>
   );
@@ -124,7 +135,7 @@ export default function SideNav() {
       <div
         className={`${
           sideNavOpen ? 'w-[70%] sm:w-64' : 'w-0 sm:w-12'
-        } absolute w-[70%] sm:w-64 shadow-lg h-full bg-zinc-900 transition-[width] duration-500 sm:relative overflow-hidden`}
+        } absolute w-[70%] sm:w-64 shadow-lg h-full bg-zinc-900 transition-[width] duration-500 sm:relative overflow-hidden z-10`}
       >
         {sideNavOpen ? (
           ''
@@ -151,7 +162,14 @@ export default function SideNav() {
               <NavLink path='/user-management' Icon={UsersIcon}>
                 Users
               </NavLink>
-              <NavLinkHouse title='Product' Icon={BoxIcon} />
+              <NavLinkHouse
+                title='Product'
+                Icon={BoxIcon}
+                links={[
+                  { title: 'Create Product', path: '/product/create' },
+                  { title: 'List Product', path: '/product/list' },
+                ]}
+              />
               <NavLink path='/login' logout Icon={LogoutIcon}>
                 Logout
               </NavLink>
