@@ -32,15 +32,11 @@ const AuthGuardMainComponent = ({ children }: AuthGuardMainComponentProps) => {
   const refreshTokenJobRef = useRef(0);
   const checkAuth = () => {
     if (!authLoader) {
-      console.log('HERE', process.env.NODE_ENV);
       initiateAuthChannel();
 
       // not logged in
       if (!expiresAt || !accessToken) {
-        if (refreshTokenJobInterval) {
-          console.log('CLEAR INTERVAL', refreshTokenJobInterval);
-          clearRefreshTokenJob();
-        }
+        if (refreshTokenJobInterval) clearRefreshTokenJob();
         if (isPublicRoute(router.pathname)) return;
         signOut();
         return;

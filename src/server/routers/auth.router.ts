@@ -48,7 +48,6 @@ export const authRouter = createRouter()
   })
   .mutation('refreshToken', {
     async resolve({ ctx }) {
-      console.log('refreshing');
       return AuthService.refreshTokens(ctx);
     },
   });
