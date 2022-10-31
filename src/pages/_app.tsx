@@ -18,10 +18,6 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   );
 };
 
-console.log('process.env.VERCEL_URL');
-console.log(process.env.VERCEL_URL);
-console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
-
 export default withTRPC<AppRouter>({
   config() {
     const url = '/api/trpc';

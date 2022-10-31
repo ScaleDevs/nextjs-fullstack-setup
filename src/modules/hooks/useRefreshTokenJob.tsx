@@ -7,9 +7,7 @@ export function useRefreshTokenJob() {
 
   const runRefreshTokenJob = () => {
     if (!refreshTokenJobInterval && expiresIn) {
-      console.log('RUN REFRESH JOB');
       const intervalInstance = setInterval(() => {
-        console.log('TRIGGER');
         refreshAccessToken();
       }, expiresIn * 1000 * 0.8);
 
@@ -18,7 +16,6 @@ export function useRefreshTokenJob() {
   };
 
   const clearRefreshTokenJob = () => {
-    console.log('clearRefreshTokenJob', refreshTokenJobInterval);
     if (refreshTokenJobInterval) setAuthState('refreshTokenJobInterval', clearInterval(refreshTokenJobInterval));
   };
 

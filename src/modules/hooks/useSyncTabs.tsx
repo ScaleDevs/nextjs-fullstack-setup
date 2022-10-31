@@ -13,7 +13,6 @@ export function useSyncTabs() {
 
   const initiateAuthChannel = () => {
     channel.onmessage = (msg: { action: 'LOGIN' | 'LOGOUT'; data?: string }) => {
-      console.log('AUTHCHANNEL - LISTENER', msg.action);
       if (msg.action === 'LOGIN' && msg.data) {
         setAuthState('authLoader', true);
 
@@ -32,12 +31,10 @@ export function useSyncTabs() {
   };
 
   const loginAllTabs = () => {
-    console.log('AUTHCHANNEL - LOGIN SENDER');
     channel.postMessage({ action: 'LOGIN', data: JSON.stringify(getAuthStates()) });
   };
 
   const logoutAllTabs = () => {
-    console.log('AUTHCHANNEL - LOGOUT SENDER');
     channel?.postMessage({
       action: 'LOGOUT',
     });

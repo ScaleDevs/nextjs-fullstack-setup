@@ -128,8 +128,6 @@ export const revokeToken = async (refreshToken: string) => {
 
     await client.send(command);
 
-    console.log('=== REVOKE TOKEN SUCCESSFULY');
-
     return true;
   } catch (err) {
     trpcErrorHandling(err);

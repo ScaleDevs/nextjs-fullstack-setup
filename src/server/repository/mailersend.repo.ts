@@ -36,11 +36,8 @@ export const sendUserInvite = async (recipientEmail: string, temporaryPassword: 
         Authorization: 'Bearer ' + constants.mailerSend.apiKey,
       },
     });
-
-    console.log('SUCCESS EMAIL INVITE');
   } catch (err) {
     console.log('ERROR AT SEND USER INVITE');
-    console.log(err);
     return false;
   }
 };
